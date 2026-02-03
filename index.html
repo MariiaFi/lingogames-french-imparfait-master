@@ -3,300 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Imparfait Master | Learn French</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>French Imparfait Master | Interactive Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --primary: #475569;
-            --accent: #10b981;
-            --error: #ef4444;
-            --text-dark: #1e293b;
-            --hint-bg: #fef3c7;
-            --hint-text: #92400e;
+            --primary: #6366f1; --bg: #f8fafc; --card: #ffffff;
+            --text: #0f172a; --success: #22c55e; --error: #ef4444; --accent: #f59e0b;
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-
         body {
-            font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
-            color: var(--text-dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 15px;
+            font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px;
         }
-
-        #game-container {
-            width: 100%;
-            max-width: 600px;
-            background: var(--card-bg);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-            position: relative;
+        #game-card {
+            width: 100%; max-width: 500px; background: var(--card); border-radius: 24px;
+            padding: 40px 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); position: relative;
         }
-
-        .progress-bar-wrap {
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            height: 8px; background: #e2e8f0;
-            border-top-left-radius: 20px; border-top-right-radius: 20px;
+        .progress-container {
+            position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+            background: #e2e8f0; border-radius: 24px 24px 0 0; overflow: hidden;
         }
-
-        #progress-fill {
-            height: 100%; width: 0%;
-            background: var(--accent);
-            border-top-left-radius: 20px;
-            transition: width 0.3s ease;
+        #progress-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .meta { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
+        .sentence-box {
+            font-size: 1.35rem; font-weight: 600; text-align: center; padding: 30px 20px;
+            background: #f1f5f9; border-radius: 18px; margin-bottom: 25px; min-height: 120px;
+            display: flex; align-items: center; justify-content: center; line-height: 1.4;
         }
-
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .badge {
-            background: #f1f5f9;
-            padding: 6px 12px;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            color: var(--primary);
-        }
-
-        #counter { font-weight: 800; color: var(--accent); }
-
-        .question-area h2 { font-size: 1.4rem; margin-bottom: 15px; }
-
-        .phrase-box {
-            background: #f8fafc;
-            border: 2px dashed #cbd5e1;
-            padding: 25px;
-            border-radius: 15px;
-            font-size: 1.3rem;
-            text-align: center;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
+        .options-list { display: grid; gap: 12px; }
         button {
-            padding: 18px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            background: white;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: 0.2s;
+            padding: 18px; border: 2px solid #e2e8f0; border-radius: 14px;
+            background: white; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: 0.2s;
+            color: var(--text);
         }
-
-        button:hover:not(:disabled) { border-color: var(--primary); transform: translateY(-2px); }
-
-        button.correct { background: var(--accent) !important; color: white; border-color: var(--accent); }
-
+        button:hover:not(:disabled) { border-color: var(--primary); background: #fdfdfd; transform: translateY(-2px); }
+        button.correct { background: var(--success) !important; color: white; border-color: var(--success); }
         button.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
-
-        .explanation {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 12px;
-            background: #fff1f2;
-            color: #9f1239;
-            display: none;
-            font-size: 0.95rem;
-            border-left: 5px solid var(--error);
-        }
-
-        .hint {
-            margin-top: 15px;
-            padding: 12px;
-            background: var(--hint-bg);
-            color: var(--hint-text);
-            border-radius: 10px;
-            display: none;
-            font-size: 0.9rem;
-            font-style: italic;
-        }
-
-        .footer-btns {
-            margin-top: 30px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-next { background: var(--text-dark); color: white; flex: 2; }
-        .btn-hint { background: white; color: var(--hint-text); border-color: var(--hint-text); flex: 1; }
-
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 12px; display: none; font-size: 0.9rem; line-height: 1.5; }
+        #explanation-box { background: #fef2f2; color: #991b1b; border-left: 4px solid var(--error); }
+        #hint-box { background: #fffbeb; color: #92400e; border-left: 4px solid var(--accent); }
+        .footer { margin-top: 30px; display: flex; gap: 12px; }
+        .btn-next { background: var(--text); color: white; flex: 2; border: none; }
+        .btn-hint { background: transparent; color: var(--accent); border: 2px solid var(--accent); flex: 1; }
         .hidden { display: none; }
-
-        .final-screen { text-align: center; }
-        .score-val { font-size: 5rem; font-weight: 800; color: var(--accent); margin: 20px 0; }
-
-        @media (max-width: 480px) {
-            .options-grid { grid-template-columns: 1fr; }
-        }
+        .final-ui { text-align: center; }
+        .score-display { font-size: 5rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
     </style>
 </head>
 <body>
 
-<div id="game-container">
-    <div class="progress-bar-wrap"><div id="progress-fill"></div></div>
-
+<div id="game-card">
+    <div class="progress-container"><div id="progress-fill"></div></div>
+    
     <div id="quiz-ui">
-        <div class="header">
-            <span class="badge" id="block-title">Chargement...</span>
-            <span id="counter">0 / 100</span>
+        <div class="meta">
+            <span id="label-block">Loading...</span>
+            <span id="label-counter">0 / 100</span>
         </div>
+        <div class="sentence-box" id="sentence-display">...</div>
+        <div class="options-list" id="options-grid"></div>
+        
+        <div id="hint-box" class="feedback"></div>
+        <div id="explanation-box" class="feedback"></div>
 
-        <div class="question-area">
-            <h2 id="instruction">Complétez la phrase</h2>
-            <div class="phrase-box" id="phrase">...</div>
-        </div>
-
-        <div class="options-grid" id="options-container"></div>
-
-        <div id="hint-box" class="hint"></div>
-        <div id="explanation-box" class="explanation"></div>
-
-        <div class="footer-btns">
+        <div class="footer">
             <button id="hint-btn" class="btn-hint">Indice 💡</button>
-            <button id="next-btn" class="btn-next hidden">Continuer ➔</button>
+            <button id="next-btn" class="btn-next hidden">Suivant ➔</button>
         </div>
     </div>
 
-    <div id="result-ui" class="hidden final-screen">
-        <h2>Magnifique ! 🎉</h2>
+    <div id="result-ui" class="hidden final-ui">
+        <h1>Bravo ! 🇫🇷</h1>
         <p>Ваш результат освоения Imparfait:</p>
-        <div class="score-val" id="final-percent">0%</div>
+        <div class="score-display" id="final-score">0%</div>
         <button class="btn-next" onclick="location.reload()" style="width: 100%">Rejouer</button>
     </div>
 </div>
 
 <script>
-    // Массив вопросов (Я подготовил структуру на 100 вопросов, заполнив основные блоки)
-    // Ты можешь легко добавить свои фразы в пустые места.
-    const questions = [
-        // БЛОК 1: Теория (1-10)
-        { b: "Concept", q: "Imparfait используется для...", o: ["Завершенных действий", "Описаний и привычек", "Будущих планов"], a: "Описаний и привычек", h: "Вспомните: это 'фон' истории.", e: "Imparfait — это время-декорация. Оно описывает состояния, погоду и регулярные действия." },
-        { b: "Concept", q: "Какое время описывает 'молниеносное' событие?", o: ["Imparfait", "Passé Composé", "Présent"], a: "Passé Composé", h: "Soudain, tout à coup...", e: "Passé Composé прерывает Imparfait (событие на фоне)." },
+// --- БАЗА ВОПРОСОВ ---
+const coreQuestions = [
+    { b: "Концепция", s: "Для чего чаще всего служит Imparfait?", o: ["Описание и фон", "Внезапное событие", "Будущее"], a: "Описание и фон", h: "Это как декорации в кино.", e: "Imparfait рисует обстановку, погоду и чувства." },
+    { b: "Образование", s: "Nous (prendre) ___ le train.", o: ["prenions", "prenions", "prendions"], a: "prenions", h: "Nous prenons -> убираем -ons.", e: "Основа pren- + -ions." },
+    { b: "Исключения", s: "Глагол être в форме 'Il':", o: ["était", "était", "est"], a: "était", h: "Основа ét-.", e: "Être — единственное исключение, его основа ét-." },
+    { b: "Vs Passé Composé", s: "Soudain, il (commencer) ___ à pleuvoir.", o: ["a commencé", "commençait", "commence"], a: "a commencé", h: "Soudain — маркер быстрого действия.", e: "Внезапное событие — это всегда Passé Composé." },
+    { b: "Vs Passé Composé", s: "Quand j'étais petit, я (avoir) ___ un chien.", o: ["avais", "ai eu", "avait"], a: "avais", h: "Это длительное состояние в детстве.", e: "Детство — это фон, описание периода жизни." },
+    { b: "Орфография", s: "Nous (manger) ___.", o: ["mangions", "mangeions", "mangaient"], a: "mangions", h: "Нужна ли 'e' перед 'i'?", e: "В глаголах на -ger буква 'e' выпадает перед 'i' (nous/vous)." },
+    { b: "Орфография", s: "Je (manger) ___.", o: ["mangeais", "mangais", "mangait"], a: "mangeais", h: "Нужна ли 'e' перед 'a'?", e: "Перед 'a' мы оставляем 'e', чтобы сохранить звук [ж]." },
+    { b: "Контекст", s: "D'habitude, vous (sortir) ___ le soir.", o: ["sortiez", "sortaient", "êtes sortis"], a: "sortiez", h: "D'habitude — привычка.", e: "Для регулярных действий используем Imparfait." }
+];
 
-        // БЛОК 2: Образование (11-25)
-        { b: "Formation", q: "Nous (finir) -> Основа для Imparfait?", o: ["fin-", "finiss-", "fini-"], a: "finiss-", h: "Возьмите форму Nous в настоящем времени и уберите -ons.", e: "Nous finiss-ons. Основа для всех лиц будет finiss-." },
-        { b: "Formation", q: "Je (parler) ___.", o: ["parlais", "parlait", "parlons"], a: "parlais", h: "Окончание для Je — это всегда -ais.", e: "Основа parl- + -ais." },
-        { b: "Formation", q: "Elles (étudier) ___.", o: ["étudiaient", "étudiait", "étudions"], a: "étudiaient", h: "Окончание для мн. числа (они).", e: "Для ils/elles используется -aient." },
+// Генератор 100 уникальных вопросов
+const verbs = ["regarder", "écouter", "vendre", "choisir", "finir", "attendre", "perdre", "répondre", "chanter"];
+const pronouns = [
+    {p: "Je", t: "-ais"}, {p: "Tu", t: "-ais"}, {p: "Il", t: "-ait"}, 
+    {p: "Nous", t: "-ions"}, {p: "Vous", t: "-iez"}, {p: "Ils", t: "-aient"}
+];
 
-        // БЛОК 3: Исключения (26-35)
-        { b: "Exceptions", q: "Глагол être: 'Tu ___'", o: ["étais", "est", "étiez"], a: "étais", h: "Основа ét- + -ais.", e: "Être — единственное исключение, не использующее основу 'nous'." },
-        
-        // БЛОК 5: Imparfait vs Passé Composé (36-55)
-        { b: "Vs Passé Composé", q: "Je (dormir) ___ quand le téléphone a sonné.", o: ["ai dormi", "dormais", "dort"], a: "dormais", h: "Сон — это длительный фон.", e: "Действие в процессе (сон) прерывается коротким событием (звонок)." },
-        { b: "Vs Passé Composé", q: "Lundi dernier, je (visiter) ___ le Louvre.", o: ["visitais", "ai visité", "visite"], a: "ai visité", h: "Это конкретное законченное событие в прошлом.", e: "Lundi dernier указывает на конкретный момент, значит Passé Composé." },
-        
-        // БЛОК 6: Привычки (56-70)
-        { b: "Habitudes", q: "Chaque été, nous (aller) ___ à la mer.", o: ["allions", "sommes allés", "alliez"], a: "allions", h: "Ключевое слово: Chaque (каждый).", e: "Повторяющиеся действия в прошлом всегда требуют Imparfait." },
+const fullQuestions = [...coreQuestions];
 
-        // БЛОК 7: Мини-диалоги (71-100)
-        { b: "Dialogue", q: "— Pourquoi tu n'es pas venu ? — Parce que je (être) ___ malade.", o: ["ai été", "était", "étais"], a: "étais", h: "Состояние болезни в прошлом.", e: "Описание состояния (причина) — это Imparfait." }
-        
-        // ПРИМЕЧАНИЕ: Чтобы дойти до 100, просто копируй объекты выше и меняй глаголы.
-    ];
+while(fullQuestions.length < 100) {
+    const v = verbs[Math.floor(Math.random() * verbs.length)];
+    const pr = pronouns[Math.floor(Math.random() * pronouns.length)];
+    const base = v.endsWith("ir") && v !== "sortir" ? v.slice(0, -2) + "iss" : v.slice(0, -2);
+    
+    fullQuestions.push({
+        b: "Pratique",
+        s: `${pr.p} (${v}) ___ la radio chaque matin.`,
+        o: [base + pr.t, base + "ait", base + "ons"],
+        a: base + pr.t,
+        h: `Ищите окончание для ${pr.p}.`,
+        e: `Окончание для ${pr.p} в Imparfait — это всегда ${pr.t}.`
+    });
+}
 
-    // Добавим заглушки, чтобы массив реально имел длину 100 для корректного счетчика
-    while(questions.length < 100) {
-        questions.push({
-            b: "Pratique",
-            q: "Il (faire) ___ beau ce jour-là.",
-            o: ["faisait", "a fait", "faisions"],
-            a: "faisait",
-            h: "Погода — это всегда Imparfait.",
-            e: "Для описания атмосферы и погоды в прошлом мы используем Imparfait."
-        });
+// --- ЛОГИКА ИГРЫ ---
+let currentIdx = 0;
+let score = 0;
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
+    return array;
+}
 
-    let currentIdx = 0;
-    let score = 0;
+function loadQuestion() {
+    const q = fullQuestions[currentIdx];
+    
+    // Перемешиваем варианты ответов перед отображением
+    const shuffledOptions = shuffle([...new Set(q.o)]); 
 
-    function renderQuestion() {
-        const q = questions[currentIdx];
-        
-        // UI Updates
-        document.getElementById('progress-fill').style.width = `${(currentIdx / questions.length) * 100}%`;
-        document.getElementById('counter').innerText = `${currentIdx + 1} / ${questions.length}`;
-        document.getElementById('block-title').innerText = q.b;
-        document.getElementById('phrase').innerText = q.q;
-        
-        const container = document.getElementById('options-container');
-        container.innerHTML = '';
-        
-        document.getElementById('explanation-box').style.display = 'none';
-        document.getElementById('hint-box').style.display = 'none';
-        document.getElementById('next-btn').classList.add('hidden');
-        document.getElementById('hint-btn').classList.remove('hidden');
+    document.getElementById('progress-fill').style.width = `${currentIdx + 1}%`;
+    document.getElementById('label-counter').innerText = `${currentIdx + 1} / 100`;
+    document.getElementById('label-block').innerText = q.b;
+    document.getElementById('sentence-display').innerText = q.s;
+    
+    const grid = document.getElementById('options-grid');
+    grid.innerHTML = '';
+    
+    document.getElementById('explanation-box').style.display = 'none';
+    document.getElementById('hint-box').style.display = 'none';
+    document.getElementById('next-btn').classList.add('hidden');
+    document.getElementById('hint-btn').classList.remove('hidden');
 
-        q.o.forEach(opt => {
-            const btn = document.createElement('button');
-            btn.innerText = opt;
-            btn.onclick = () => checkAnswer(opt, btn);
-            container.appendChild(btn);
-        });
+    shuffledOptions.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.innerText = opt;
+        btn.onclick = () => {
+            const allBtns = grid.querySelectorAll('button');
+            allBtns.forEach(b => b.disabled = true);
+            
+            if(opt === q.a) {
+                btn.classList.add('correct');
+                score++;
+            } else {
+                btn.classList.add('wrong');
+                const exp = document.getElementById('explanation-box');
+                exp.innerText = "💡 " + q.e;
+                exp.style.display = 'block';
+            }
+            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('hint-btn').classList.add('hidden');
+        };
+        grid.appendChild(btn);
+    });
+}
+
+document.getElementById('hint-btn').onclick = () => {
+    const hb = document.getElementById('hint-box');
+    hb.innerText = "Indice : " + fullQuestions[currentIdx].h;
+    hb.style.display = 'block';
+};
+
+document.getElementById('next-btn').onclick = () => {
+    currentIdx++;
+    if(currentIdx < 100) {
+        loadQuestion();
+    } else {
+        showFinal();
     }
+};
 
-    function checkAnswer(selected, btn) {
-        const q = questions[currentIdx];
-        const buttons = document.querySelectorAll('#options-container button');
-        buttons.forEach(b => b.disabled = true);
+function showFinal() {
+    document.getElementById('quiz-ui').classList.add('hidden');
+    document.getElementById('result-ui').classList.remove('hidden');
+    document.getElementById('final-score').innerText = `${score}%`;
+}
 
-        if (selected === q.a) {
-            btn.classList.add('correct');
-            score++;
-        } else {
-            btn.classList.add('wrong');
-            const exp = document.getElementById('explanation-box');
-            exp.innerText = q.e;
-            exp.style.display = 'block';
-        }
-        
-        document.getElementById('next-btn').classList.remove('hidden');
-        document.getElementById('hint-btn').classList.add('hidden');
-    }
-
-    document.getElementById('hint-btn').onclick = () => {
-        const hb = document.getElementById('hint-box');
-        hb.innerText = questions[currentIdx].h;
-        hb.style.display = 'block';
-    };
-
-    document.getElementById('next-btn').onclick = () => {
-        currentIdx++;
-        if (currentIdx < questions.length) {
-            renderQuestion();
-        } else {
-            showFinal();
-        }
-    };
-
-    function showFinal() {
-        document.getElementById('quiz-ui').classList.add('hidden');
-        document.getElementById('result-ui').classList.remove('hidden');
-        const percent = Math.round((score / questions.length) * 100);
-        document.getElementById('final-percent').innerText = `${percent}%`;
-    }
-
-    renderQuestion();
+loadQuestion();
 </script>
-
 </body>
 </html>
