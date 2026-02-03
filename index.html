@@ -1,239 +1,1223 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imparfait Elite | 50 Уникальных Заданий</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <title>French Imparfait Master</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary: #6366f1; --bg: #f8fafc; --card: #ffffff;
-            --text: #0f172a; --success: #10b981; --error: #f43f5e; --accent: #f59e0b;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text);
-            display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        #game-card {
-            width: 100%; max-width: 500px; background: var(--card); border-radius: 24px;
-            padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative;
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin: 20px 0;
         }
+        
+        header {
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        
+        .progress-container {
+            padding: 20px 25px 10px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+        }
+        
         .progress-bar {
-            position: absolute; top: 0; left: 0; width: 100%; height: 8px;
-            background: #e2e8f0; border-radius: 24px 24px 0 0; overflow: hidden;
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 10px;
         }
-        #progress-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .meta { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 0.8rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
-        .sentence-box {
-            font-size: 1.4rem; font-weight: 600; text-align: center; padding: 40px 20px;
-            background: #f1f5f9; border-radius: 20px; margin-bottom: 25px; min-height: 120px;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #36d1dc, #5b86e5);
+            width: 0%;
+            transition: width 0.5s ease;
         }
-        .verb-hint { font-size: 0.9rem; color: var(--primary); font-weight: 400; }
-        .options-list { display: grid; gap: 12px; }
-        button {
-            padding: 16px; border: 2px solid #e2e8f0; border-radius: 14px;
-            background: white; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: 0.2s; color: var(--text);
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #6c757d;
         }
-        button:hover:not(:disabled) { border-color: var(--primary); background: #eff6ff; }
-        button.correct { background: var(--success) !important; color: white !important; border-color: var(--success); }
-        button.wrong { background: var(--error) !important; color: white !important; border-color: var(--error); }
-        button.reveal { border: 2px solid var(--success); color: var(--success); background: #ecfdf5; }
-        .feedback { margin-top: 20px; padding: 18px; border-radius: 14px; display: none; font-size: 0.95rem; line-height: 1.5; }
-        #explanation-box { background: #fef2f2; color: #991b1b; border-left: 5px solid var(--error); }
-        #hint-box { background: #fffbeb; color: #92400e; border-left: 5px solid var(--accent); }
-        .footer { margin-top: 30px; display: flex; gap: 12px; }
-        .btn-next { background: var(--text); color: white; flex: 2; border: none; border-radius: 14px; cursor: pointer; font-weight: 700; padding: 18px; font-size: 1rem; }
-        .btn-hint { background: transparent; color: var(--accent); border: 2px solid var(--accent); flex: 1; border-radius: 14px; cursor: pointer; font-weight: 700; }
-        .hidden { display: none; }
-        .final-ui { text-align: center; padding: 20px 0; }
-        .score-num { font-size: 4.5rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
+        
+        .question-container {
+            padding: 25px;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .question-block {
+            margin-bottom: 25px;
+        }
+        
+        .question-number {
+            color: #4b6cb7;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .question-text {
+            font-size: 1.3rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+        
+        .question-example {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-style: italic;
+            border-left: 4px solid #4b6cb7;
+        }
+        
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            padding: 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1.05rem;
+        }
+        
+        .option:hover {
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        
+        .buttons-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: auto;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-hint {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-next {
+            background-color: #4b6cb7;
+            color: white;
+        }
+        
+        .btn-restart {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn:disabled {
+            background-color: #e9ecef;
+            color: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .hint-container {
+            background-color: #e7f1ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            border-left: 4px solid #4b6cb7;
+            display: none;
+        }
+        
+        .hint-title {
+            font-weight: 600;
+            color: #4b6cb7;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hint-text {
+            line-height: 1.5;
+        }
+        
+        .feedback-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .feedback-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .feedback-correct {
+            color: #28a745;
+        }
+        
+        .feedback-incorrect {
+            color: #dc3545;
+        }
+        
+        .result-container {
+            padding: 30px;
+            text-align: center;
+            display: none;
+        }
+        
+        .result-title {
+            color: #4b6cb7;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .result-score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #28a745;
+            margin: 20px 0;
+        }
+        
+        .result-message {
+            font-size: 1.2rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+        
+        .result-summary {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: left;
+            margin: 20px 0;
+            border-left: 4px solid #4b6cb7;
+        }
+        
+        .result-summary h3 {
+            color: #4b6cb7;
+            margin-bottom: 10px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 25px 0;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #4b6cb7;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                border-radius: 15px;
+            }
+            
+            header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .question-container {
+                padding: 20px;
+                min-height: 300px;
+            }
+            
+            .question-text {
+                font-size: 1.1rem;
+            }
+            
+            .buttons-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                justify-content: center;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pulse {
+            animation: pulse 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body>
-
-<div id="game-card">
-    <div class="progress-bar"><div id="progress-fill"></div></div>
-    
-    <div id="quiz-ui">
-        <div class="meta">
-            <span>Imparfait Эксперт</span>
-            <span id="label-counter">1 / 50</span>
-        </div>
-        <div class="sentence-box">
-            <div id="sentence-display">...</div>
-            <div id="verb-info" class="verb-hint"></div>
-        </div>
-        <div class="options-list" id="options-grid"></div>
+    <div class="container">
+        <header>
+            <h1>French Imparfait Master</h1>
+            <p class="subtitle">Maîtrisez l'imparfait en 40 questions</p>
+        </header>
         
-        <div id="hint-box" class="feedback"></div>
-        <div id="explanation-box" class="feedback"></div>
-
-        <div class="footer">
-            <button id="hint-btn" class="btn-hint">Подсказка 💡</button>
-            <button id="next-btn" class="btn-next hidden">Далее ➔</button>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="progressText">Question 0/40</span>
+                <span id="scoreText">Score: 0</span>
+            </div>
+        </div>
+        
+        <div class="question-container" id="questionContainer">
+            <!-- Вопросы будут загружаться здесь -->
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <!-- Результат будет загружаться здесь -->
         </div>
     </div>
+    
+    <script>
+        // Массив вопросов для игры (40 вопросов)
+        const questions = [
+            // Блок 1: Что такое Imparfait и когда он используется (5 вопросов)
+            {
+                id: 1,
+                block: "Что такое Imparfait и когда он используется",
+                question: "В каком случае обычно используется Imparfait?",
+                options: [
+                    "Для описания завершённых действий в прошлом",
+                    "Для описания привычек и повторяющихся действий в прошлом",
+                    "Для выражения ближайшего будущего",
+                    "Для разговора о планах"
+                ],
+                correctAnswer: 1,
+                hint: "Imparfait используется для описания фона, привычек, повторяющихся действий и состояний в прошлом.",
+                example: "Quand j'étais enfant, je jouais au foot tous les jours. (Когда я был ребенком, я играл в футбол каждый день.)"
+            },
+            {
+                id: 2,
+                block: "Что такое Imparfait и когда он используется",
+                question: "Какое из этих предложений использует Imparfait правильно?",
+                options: [
+                    "Hier, j'ai mangé une pomme.",
+                    "Chaque été, nous allions à la plage.",
+                    "Demain, je vais au cinéma.",
+                    "Maintenant, je lis un livre."
+                ],
+                correctAnswer: 1,
+                hint: "Слова 'chaque été' (каждое лето) указывают на повторяющееся действие в прошлом, что требует Imparfait.",
+                example: "Les mots 'chaque', 'toujours', 'souvent' indiquent souvent l'imparfait."
+            },
+            {
+                id: 3,
+                block: "Что такое Imparfait и когда он используется",
+                question: "Imparfait используется для описания:",
+                options: [
+                    "Конкретных завершённых действий",
+                    "Одновременных действий в прошлом",
+                    "Будущих намерений",
+                    "Текущих событий"
+                ],
+                correctAnswer: 1,
+                hint: "Imparfait часто описывает действия, которые служили фоном для других событий или происходили одновременно.",
+                example: "Il faisait beau quand nous sommes partis. (Была хорошая погода, когда мы уехали.)"
+            },
+            {
+                id: 4,
+                block: "Что такое Imparfait и когда он используется",
+                question: "Какая ситуация лучше всего описывается с помощью Imparfait?",
+                options: [
+                    "Вчера я купил новую машину",
+                    "В детстве я часто болел",
+                    "Завтра у меня встреча",
+                    "Я только что закончил работу"
+                ],
+                correctAnswer: 1,
+                hint: "Imparfait идеально подходит для описания состояний здоровья, чувств, физических характеристик в прошлом.",
+                example: "Quand j'avais 10 ans, j'étais petit et timide. (Когда мне было 10 лет, я был маленьким и застенчивым.)"
+            },
+            {
+                id: 5,
+                block: "Что такое Imparfait и когда он используется",
+                question: "Какое слово-маркер чаще всего указывает на использование Imparfait?",
+                options: [
+                    "Hier",
+                    "Soudain",
+                    "Toujours",
+                    "D'abord"
+                ],
+                correctAnswer: 2,
+                hint: "Слова 'toujours', 'souvent', 'chaque jour', 'd'habitude' часто указывают на повторяющиеся действия в прошлом, требующие Imparfait.",
+                example: "Je me levais toujours à 7 heures. (Я всегда вставал в 7 часов.)"
+            },
+            
+            // Блок 2: Образование Imparfait (основа + окончания) (6 вопросов)
+            {
+                id: 6,
+                block: "Образование Imparfait",
+                question: "Как образуется основа для Imparfait у правильных глаголов?",
+                options: [
+                    "Берётся форма глагола в présent 1 лица мн. числа",
+                    "Берётся форма инфинитива без окончания -er/-ir/-re",
+                    "Берётся форма глагола в passé composé",
+                    "Берётся форма participe passé"
+                ],
+                correctAnswer: 1,
+                hint: "Основа Imparfait образуется от 1 лица мн. числа présent (nous form), от которой отбрасывается окончание -ons.",
+                example: "Parler → nous parlons → основа: parl-"
+            },
+            {
+                id: 7,
+                block: "Образование Imparfait",
+                question: "Какие окончания добавляются к основе в Imparfait?",
+                options: [
+                    "-e, -es, -e, -ons, -ez, -ent",
+                    "-ais, -ais, -ait, -ions, -iez, -aient",
+                    "-ai, -as, -a, -ons, -ez, -ont",
+                    "-é, -és, -ée, -ées"
+                ],
+                correctAnswer: 1,
+                hint: "Окончания Imparfait одинаковы для всех глаголов: -ais, -ais, -ait, -ions, -iez, -aient.",
+                example: "Je parlais, tu parlais, il parlait, nous parlions, vous parliez, ils parlaient"
+            },
+            {
+                id: 8,
+                block: "Образование Imparfait",
+                question: "Выберите правильную форму глагола 'finir' в Imparfait для 'nous'",
+                options: [
+                    "Nous finissions",
+                    "Nous finissons",
+                    "Nous finirions",
+                    "Nous finirons"
+                ],
+                correctAnswer: 0,
+                hint: "Finir → nous finissons → основа: finiss- + окончание -ions = nous finissions",
+                example: "Pendant les vacances, nous finissions toujours nos devoirs rapidement."
+            },
+            {
+                id: 9,
+                block: "Образование Imparfait",
+                question: "Как будет 'ты смотрел' в Imparfait (regarder)?",
+                options: [
+                    "Tu regardes",
+                    "Tu regardais",
+                    "Tu as regardé",
+                    "Tu regarderas"
+                ],
+                correctAnswer: 1,
+                hint: "Regarder → nous regardons → основа: regard- + окончание -ais = tu regardais",
+                example: "Quand tu étais petit, tu regardais les dessins animés."
+            },
+            {
+                id: 10,
+                block: "Образование Imparfait",
+                question: "Выберите правильную форму глагола 'attendre' в Imparfait для 'elles'",
+                options: [
+                    "Elles attendaient",
+                    "Elles attendent",
+                    "Elles ont attendu",
+                    "Elles attendraient"
+                ],
+                correctAnswer: 0,
+                hint: "Attendre → nous attendons → основа: attend- + окончание -aient = elles attendaient",
+                example: "Elles attendaient toujours le bus à la même heure."
+            },
+            {
+                id: 11,
+                block: "Образование Imparfait",
+                question: "Как будет 'я жил' в Imparfait (habiter)?",
+                options: [
+                    "J'habite",
+                    "J'habitais",
+                    "J'ai habité",
+                    "J'habiterai"
+                ],
+                correctAnswer: 1,
+                hint: "Habiter → nous habitons → основа: habit- + окончание -ais = j'habitais",
+                example: "Quand j'étais étudiant, j'habitais à Paris."
+            },
+            
+            // Блок 3: Исключения: être, irregularités (4 вопроса)
+            {
+                id: 12,
+                block: "Исключения: être, irregularités",
+                question: "Какова основа глагола 'être' для образования Imparfait?",
+                options: [
+                    "som-",
+                    "ét-",
+                    "ser-",
+                    "es-"
+                ],
+                correctAnswer: 1,
+                hint: "Глагол 'être' имеет неправильную основу 'ét-' для образования Imparfait.",
+                example: "J'étais, tu étais, il était, nous étions, vous étiez, ils étaient"
+            },
+            {
+                id: 13,
+                block: "Исключения: être, irregularités",
+                question: "Выберите правильную форму Imparfait для 'nous sommes'",
+                options: [
+                    "Nous sommes",
+                    "Nous étions",
+                    "Nous serions",
+                    "Nous avons été"
+                ],
+                correctAnswer: 1,
+                hint: "Глагол 'être' в Imparfait: nous étions",
+                example: "Quand nous étions jeunes, nous étions très curieux."
+            },
+            {
+                id: 14,
+                block: "Исключения: être, irregularités",
+                question: "Есть ли другие исключения в образовании Imparfait?",
+                options: [
+                    "Да, многие глаголы имеют неправильные основы",
+                    "Нет, только глагол 'être' является исключением",
+                    "Только глаголы движения",
+                    "Только возвратные глаголы"
+                ],
+                correctAnswer: 1,
+                hint: "Imparfait - одно из самых регулярных времён французского языка. Единственное исключение - глагол 'être'.",
+                example: "Даже такие глаголы как 'aller', 'faire', 'avoir' образуют Imparfait по общему правилу."
+            },
+            {
+                id: 15,
+                block: "Исключения: être, irregularités",
+                question: "Как будет 'вы были' в Imparfait?",
+                options: [
+                    "Vous êtes",
+                    "Vous étiez",
+                    "Vous avez été",
+                    "Vous serez"
+                ],
+                correctAnswer: 1,
+                hint: "Глагол 'être' во 2 лице мн. числа Imparfait: vous étiez",
+                example: "Vous étiez très gentils avec moi."
+            },
+            
+            // Блок 4: Распознавание Imparfait в тексте (5 вопросов)
+            {
+                id: 16,
+                block: "Распознавание Imparfait в тексте",
+                question: "В каком предложении используется Imparfait?",
+                options: [
+                    "Je lis un livre intéressant.",
+                    "J'ai lu ce livre la semaine dernière.",
+                    "Je lisais quand le téléphone a sonné.",
+                    "Je lirai ce livre demain."
+                ],
+                correctAnswer: 2,
+                hint: "Imparfait часто используется для фонового действия, которое прерывается другим действием (обычно в Passé Composé).",
+                example: "Je lisais (фон) quand le téléphone a sonné (прерывающее действие)."
+            },
+            {
+                id: 17,
+                block: "Распознавание Imparfait в тексте",
+                question: "Определите время глагола в предложении: 'Les enfants jouaient dans le jardin.'",
+                options: [
+                    "Présent",
+                    "Imparfait",
+                    "Passé Composé",
+                    "Futur"
+                ],
+                correctAnswer: 1,
+                hint: "Окончание -aient указывает на Imparfait 3 лица мн. числа.",
+                example: "Jouer → ils/elles jouaient (Imparfait)"
+            },
+            {
+                id: 18,
+                block: "Распознавание Imparfait в тексте",
+                question: "Сколько глаголов в Imparfait в этом предложении: 'Il faisait froid et le vent soufflait fort.'",
+                options: [
+                    "0",
+                    "1",
+                    "2",
+                    "3"
+                ],
+                correctAnswer: 2,
+                hint: "'Faisait' и 'soufflait' - оба в Imparfait, описывают фоновую обстановку.",
+                example: "Imparfait часто используется для описания погоды, обстановки, атмосферы."
+            },
+            {
+                id: 19,
+                block: "Распознавание Imparfait в тексте",
+                question: "Какое время используется в предложении: 'Quand il est entré, tout le monde parlait.'",
+                options: [
+                    "Présent et Passé Composé",
+                    "Imparfait et Passé Composé",
+                    "Futur et Imparfait",
+                    "Passé Composé et Futur"
+                ],
+                correctAnswer: 1,
+                hint: "'Est entré' - Passé Composé (конкретное завершённое действие), 'parlait' - Imparfait (действие в процессе).",
+                example: "Passé Composé часто прерывает действие в Imparfait."
+            },
+            {
+                id: 20,
+                block: "Распознавание Imparfait в тексте",
+                question: "В каком из этих предложений глагол НЕ в Imparfait?",
+                options: [
+                    "Nous mangions tranquillement.",
+                    "Tu pensais à tes vacances.",
+                    "Elle a pris son parapluie.",
+                    "Il pleuvait sans arrêt."
+                ],
+                correctAnswer: 2,
+                hint: "'A pris' - Passé Composé, остальные глаголы в Imparfait (-ions, -ais, -ait).",
+                example: "Passé Composé образуется с помощью вспомогательного глагола (avoir/être) + participe passé."
+            },
+            
+            // Блок 5: Imparfait vs Passé Composé (10 вопросов)
+            {
+                id: 21,
+                block: "Imparfait vs Passé Composé",
+                question: "Выберите правильную пару времен для контекста: 'Quand je (être) enfant, je (jouer) au foot.'",
+                options: [
+                    "étais, jouais",
+                    "ai été, ai joué",
+                    "étais, ai joué",
+                    "ai été, jouais"
+                ],
+                correctAnswer: 0,
+                hint: "Оба действия - длительные состояния в прошлом (быть ребенком, играть в футбол), поэтому оба в Imparfait.",
+                example: "Imparfait для описания длительных состояний и привычек в прошлом."
+            },
+            {
+                id: 22,
+                block: "Imparfait vs Passé Composé",
+                question: "Выберите правильную пару: 'Hier, je (regarder) la télé quand mon ami (arriver).'",
+                options: [
+                    "regardais, est arrivé",
+                    "ai regardé, arrivait",
+                    "regardais, arrivait",
+                    "ai regardé, est arrivé"
+                ],
+                correctAnswer: 0,
+                hint: "Длительное действие (смотрел телевизор) прерывается конкретным событием (друг пришел).",
+                example: "Imparfait для фонового действия, Passé Composé для прерывающего действия."
+            },
+            {
+                id: 23,
+                block: "Imparfait vs Passé Composé",
+                question: "Какая разница между 'Il faisait chaud' и 'Il a fait chaud'?",
+                options: [
+                    "Первое описывает состояние, второе - конкретный факт",
+                    "Первое в настоящем времени, второе - в прошлом",
+                    "Нет разницы, оба в прошлом",
+                    "Первое в будущем, второе - в прошлом"
+                ],
+                correctAnswer: 0,
+                hint: "'Il faisait chaud' (Imparfait) описывает обстановку/состояние. 'Il a fait chaud' (Passé Composé) констатирует факт.",
+                example: "Imparfait = описание, фон; Passé Composé = констатация, завершенное действие."
+            },
+            {
+                id: 24,
+                block: "Imparfait vs Passé Composé",
+                question: "Выберите правильный вариант: 'Quand j'(entrer), elle (lire) un livre.'",
+                options: [
+                    "suis entré, lisait",
+                    "entrais, a lu",
+                    "suis entré, a lu",
+                    "entrais, lisait"
+                ],
+                correctAnswer: 0,
+                hint: "'Entrer' - конкретное завершенное действие (Passé Composé), 'lire' - действие в процессе (Imparfait).",
+                example: "Когда я вошел, она читала книгу."
+            },
+            {
+                id: 25,
+                block: "Imparfait vs Passé Composé",
+                question: "В каком случае используется только Passé Composé?",
+                options: [
+                    "Для описания привычек",
+                    "Для указания на конкретный момент в прошлом",
+                    "Для описания фона",
+                    "Для одновременных действий"
+                ],
+                correctAnswer: 1,
+                hint: "Passé Composé используется для конкретных завершенных действий, привязанных к определенному моменту.",
+                example: "Hier à 18h, j'ai fini mon travail. (Вчера в 18:00 я закончил работу.)"
+            },
+            {
+                id: 26,
+                block: "Imparfait vs Passé Composé",
+                question: "Выберите правильную пару: 'Pendant les vacances, nous (se lever) tard et nous (aller) à la plage.'",
+                options: [
+                    "nous levions, allions",
+                    "nous sommes levés, sommes allés",
+                    "nous levions, sommes allés",
+                    "nous sommes levés, allions"
+                ],
+                correctAnswer: 0,
+                hint: "Оба действия - привычки в прошлом (вставали поздно, ходили на пляж), поэтому оба в Imparfait.",
+                example: "Pendant + период времени + Imparfait = привычные действия в этот период."
+            },
+            {
+                id: 27,
+                block: "Imparfait vs Passé Composé",
+                question: "'Il a neigé toute la journée' или 'Il neigeait toute la journée'?",
+                options: [
+                    "Только первый вариант правильный",
+                    "Только второй вариант правильный",
+                    "Оба правильные, но с разным смыслом",
+                    "Оба неправильные"
+                ],
+                correctAnswer: 2,
+                hint: "'Il a neigé' - констатация факта (шел снег). 'Il neigeait' - описание обстановки, фона.",
+                example: "Passé Composé подчеркивает завершенность, Imparfait - длительность."
+            },
+            {
+                id: 28,
+                block: "Imparfait vs Passé Composé",
+                question: "Выберите правильный вариант: 'Quand je (voir) l'accident, je (téléphoner) à la police.'",
+                options: [
+                    "ai vu, ai téléphoné",
+                    "voyais, téléphonais",
+                    "ai vu, téléphonais",
+                    "voyais, ai téléphoné"
+                ],
+                correctAnswer: 0,
+                hint: "Оба действия - конкретные завершенные действия в прошлом, последовательные.",
+                example: "Когда я увидел аварию, я позвонил в полицию. (два завершенных действия)"
+            },
+            {
+                id: 29,
+                block: "Imparfait vs Passé Composé",
+                question: "В каком предложении правильно использованы времена?",
+                options: [
+                    "Hier soir, je regardais la télé à 20h.",
+                    "Chaque jour, j'ai pris le bus à 8h.",
+                    "Quand il était petit, il allait à l'école à pied.",
+                    "Soudain, il comprenait la solution."
+                ],
+                correctAnswer: 2,
+                hint: "Imparfait для привычки в прошлом, Passé Composé для конкретного момента.",
+                example: "Конкретное время (hier à 20h) обычно требует Passé Composé, а не Imparfait."
+            },
+            {
+                id: 30,
+                block: "Imparfait vs Passé Composé",
+                question: "Выберите правильный перевод: 'Вчера я работал с 9 до 5.'",
+                options: [
+                    "Hier, j'ai travaillé de 9h à 17h.",
+                    "Hier, je travaillais de 9h à 17h.",
+                    "Hier, je travaille de 9h à 17h.",
+                    "Hier, je travaillerai de 9h à 17h."
+                ],
+                correctAnswer: 1,
+                hint: "Действие с указанием продолжительности (с 9 до 5) обычно в Imparfait, если подчеркивается длительность.",
+                example: "Для подчеркивания продолжительности действия чаще используется Imparfait."
+            },
+            
+            // Блок 6: Контекст, привычки, описания, фоновые действия (5 вопросов)
+            {
+                id: 31,
+                block: "Контекст, привычки, описания",
+                question: "Какой из этих глаголов чаще всего используется в Imparfait для описания фона?",
+                options: [
+                    "Arriver",
+                    "Partir",
+                    "Faire (погода)",
+                    "Finir"
+                ],
+                correctAnswer: 2,
+                hint: "Глаголы, описывающие погоду, состояние, чувства часто используются в Imparfait для создания фона.",
+                example: "Il faisait beau, le soleil brillait, les oiseaux chantaient..."
+            },
+            {
+                id: 32,
+                block: "Контекст, привычки, описания",
+                question: "Какое предложение лучше всего описывает привычку в прошлом?",
+                options: [
+                    "Un jour, j'ai visité le Louvre.",
+                    "Tous les dimanches, nous rendions visite à nos grands-parents.",
+                    "Demain, j'irai au marché.",
+                    "Je visite souvent des musées."
+                ],
+                correctAnswer: 1,
+                hint: "Выражения 'tous les dimanches', 'chaque semaine', 'd'habitude' указывают на привычки, требующие Imparfait.",
+                example: "Imparfait идеален для описания рутинных действий в прошлом."
+            },
+            {
+                id: 33,
+                block: "Контекст, привычки, описания",
+                question: "Для описания чего НЕ используется Imparfait?",
+                options: [
+                    "Внешности человека в прошлом",
+                    "Чувств и эмоций в прошлом",
+                    "Конкретного однократного действия в определенный момент",
+                    "Общей обстановки и атмосферы"
+                ],
+                correctAnswer: 2,
+                hint: "Конкретные однократные действия в определенный момент обычно выражаются Passé Composé.",
+                example: "Imparfait = длительные состояния, Passé Composé = конкретные завершенные действия."
+            },
+            {
+                id: 34,
+                block: "Контекст, привычки, описания",
+                question: "Какое предложение описывает одновременно два фоновых действия?",
+                options: [
+                    "Il lisait pendant que je cuisinais.",
+                    "Il a lu puis il a cuisiné.",
+                    "Il lit pendant que je cuisine.",
+                    "Il lira pendant que je cuisinerai."
+                ],
+                correctAnswer: 0,
+                hint: "Pendant que (в то время как) + Imparfait часто описывает два одновременных фоновых действия.",
+                example: "Пока он читал, я готовил. - два длительных действия, происходящих одновременно."
+            },
+            {
+                id: 35,
+                block: "Контекст, привычки, описания",
+                question: "Как лучше перевести: 'В детстве у меня были светлые волосы.'",
+                options: [
+                    "Quand j'étais enfant, j'ai eu les cheveux blonds.",
+                    "Quand j'étais enfant, j'avais les cheveux blonds.",
+                    "Quand je suis enfant, j'ai les cheveux blonds.",
+                    "Quand je serai enfant, j'aurai les cheveux blonds."
+                ],
+                correctAnswer: 1,
+                hint: "Физические характеристики в прошлом (были светлые волосы) описываются с помощью Imparfait.",
+                example: "Imparfait используется для описания состояний, внешности, характеристик в прошлом."
+            },
+            
+            // Блок 7: Практика в мини-диалогах и историях (5 вопросов)
+            {
+                id: 36,
+                block: "Практика в мини-диалогах",
+                question: "Закончите диалог: 'Que faisais-tu hier soir?' - 'Je _____ un livre.'",
+                options: [
+                    "lis",
+                    "ai lu",
+                    "lisais",
+                    "lirai"
+                ],
+                correctAnswer: 2,
+                hint: "Вопрос в Imparfait (faisais) требует ответа в том же времени, если это фоновое действие.",
+                example: "Вопрос о том, что ты делал (длительное действие) вчера вечером."
+            },
+            {
+                id: 37,
+                block: "Практика в мини-диалогах",
+                question: "Выберите правильный вариант для истории: 'Quand j'(avoir) 10 ans, je (vouloir) devenir astronaute.'",
+                options: [
+                    "ai eu, ai voulu",
+                    "avais, voulais",
+                    "ai eu, voulais",
+                    "avais, ai voulu"
+                ],
+                correctAnswer: 1,
+                hint: "Оба глагола описывают состояние в прошлом (возраст, желание), поэтому оба в Imparfait.",
+                example: "Avoir и vouloir в значении состояния требуют Imparfait."
+            },
+            {
+                id: 38,
+                block: "Практика в мини-диалогах",
+                question: "Закончите рассказ: 'Il pleuvait. Je (marcher) sous la pluie quand soudain...'",
+                options: [
+                    "marchais",
+                    "ai marché",
+                    "marche",
+                    "marcherai"
+                ],
+                correctAnswer: 0,
+                hint: "Фоновая обстановка (il pleuvait) + длительное действие (шел под дождем) требуют Imparfait.",
+                example: "Imparfait создает фон, который будет прерван внезапным действием (обычно в Passé Composé)."
+            },
+            {
+                id: 39,
+                block: "Практика в мини-диалогах",
+                question: "Выберите правильный вариант: 'Nous (parler) de nos projets quand le professeur (entrer).'",
+                options: [
+                    "parlions, est entré",
+                    "avons parlé, entrait",
+                    "parlions, entrait",
+                    "avons parlé, est entré"
+                ],
+                correctAnswer: 0,
+                hint: "Длительное действие (разговаривали) прерывается конкретным событием (учитель вошел).",
+                example: "Imparfait для фона, Passé Composé для прерывающего действия."
+            },
+            {
+                id: 40,
+                block: "Практика в мини-диалогах",
+                question: "Как лучше начать рассказ о детстве?",
+                options: [
+                    "Hier, je suis allé au parc.",
+                    "Quand j'étais petit, je collectionnais les timbres.",
+                    "Demain, j'irai chez mes grands-parents.",
+                    "Maintenant, je travaille dans un bureau."
+                ],
+                correctAnswer: 1,
+                hint: "Рассказы о детстве, привычках, повторяющихся действиях обычно начинаются с Imparfait.",
+                example: "Imparfait идеально подходит для повествования о прошлом, описания фона и привычек."
+            }
+        ];
 
-    <div id="result-ui" class="hidden final-ui">
-        <h2>Тест завершен! 🎉</h2>
-        <div class="score-num" id="final-score">0/50</div>
-        <p id="score-comment" style="margin-bottom: 25px; color: #64748b;"></p>
-        <button class="btn-next" onclick="location.reload()" style="width: 100%;">Попробовать снова</button>
-    </div>
-</div>
-
-<script>
-const verbs = [
-    {v: "être", b: "ét", n: "Исключение! Основа ét-"},
-    {v: "avoir", b: "av", n: "Основа av- (nous avons)"},
-    {v: "parler", b: "parl", n: "1-я группа, основа parl-"},
-    {v: "finir", b: "finiss", n: "2-я группа, суффикс -iss-"},
-    {v: "faire", b: "fais", n: "Основа fais- (nous faisons)"},
-    {v: "aller", b: "all", n: "Основа all-"},
-    {v: "prendre", b: "pren", n: "Основа pren- (nous prenons)"},
-    {v: "vouloir", b: "voul", n: "Основа voul-"},
-    {v: "venir", b: "ven", n: "Основа ven-"},
-    {v: "dire", b: "dis", n: "Основа dis- (nous disons)"},
-    {v: "voir", b: "voy", n: "Основа voy- (nous voyons)"},
-    {v: "pouvoir", b: "pouv", n: "Основа pouv-"},
-    {v: "devoir", b: "dev", n: "Основа dev-"},
-    {v: "savoir", b: "sav", n: "Основа sav- (nous savons)"},
-    {v: "lire", b: "lis", n: "Основа lis- (nous lisons)"},
-    {v: "écrire", b: "écriv", n: "Основа écriv- (nous écrivons)"},
-    {v: "partir", b: "part", n: "Основа part-"},
-    {v: "mettre", b: "mett", n: "Основа mett-"}
-];
-
-const subjects = [
-    {p: "Je", t: "ais"}, {p: "Tu", t: "ais"}, {p: "Il", t: "ait"}, 
-    {p: "Elle", t: "ait"}, {p: "Nous", t: "ions"}, {p: "Vous", t: "iez"}, 
-    {p: "Ils", t: "aient"}, {p: "Elles", t: "aient"}
-];
-
-const contexts = [
-    "quand j'étais petit", "chaque été", "tous les jours", "à cette époque-là", 
-    "souvent", "toujours", "pendant les vacances", "autrefois", "le soir"
-];
-
-let quizData = [];
-let current = 0;
-let score = 0;
-
-function initGame() {
-    let combinations = [];
-    // Создаем все возможные уникальные комбинации
-    verbs.forEach(v => {
-        subjects.forEach(s => {
-            combinations.push({ v, s });
-        });
-    });
-
-    // Перемешиваем комбинации
-    combinations.sort(() => Math.random() - 0.5);
-
-    // Берем первые 50
-    for(let i = 0; i < 50; i++) {
-        const item = combinations[i];
-        const correct = item.v.b + item.s.t;
+        // Игровые переменные
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let questionsAnswered = 0;
+        let totalQuestions = questions.length;
+        let usedQuestions = new Set();
+        let currentQuestion;
         
-        // Генерация неправильных вариантов (другие окончания той же основы)
-        let distractors = subjects
-            .filter(x => x.t !== item.s.t)
-            .map(x => item.v.b + x.t);
+        // DOM элементы
+        const questionContainer = document.getElementById('questionContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const scoreText = document.getElementById('scoreText');
         
-        // Перемешиваем дистракторы и берем 2
-        distractors = distractors.sort(() => Math.random() - 0.5).slice(0, 2);
-
-        quizData.push({
-            sentence: `${item.s.p} _______ ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
-            verbName: `Глагол: ${item.v.v}`,
-            ans: correct,
-            opts: [correct, ...distractors],
-            explain: `${item.v.n}. Для местоимения <b>${item.s.p}</b> используется окончание <b>-${item.s.t}</b>.`,
-            hint: `Ищите основу "${item.v.b}" и окончание для "${item.s.p}".`
-        });
-    }
-}
-
-function render() {
-    const data = quizData[current];
-    const grid = document.getElementById('options-grid');
-    const shuffledOpts = [...data.opts].sort(() => Math.random() - 0.5);
-
-    document.getElementById('progress-fill').style.width = `${((current + 1) / 50) * 100}%`;
-    document.getElementById('label-counter').innerText = `${current + 1} / 50`;
-    document.getElementById('sentence-display').innerText = data.sentence;
-    document.getElementById('verb-info').innerText = data.verbName;
-    
-    document.getElementById('explanation-box').style.display = 'none';
-    document.getElementById('hint-box').style.display = 'none';
-    document.getElementById('next-btn').classList.add('hidden');
-    document.getElementById('hint-btn').classList.remove('hidden');
-
-    grid.innerHTML = '';
-    shuffledOpts.forEach(opt => {
-        const btn = document.createElement('button');
-        btn.innerText = opt;
-        btn.onclick = () => checkAnswer(btn, opt, data.ans);
-        grid.appendChild(btn);
-    });
-}
-
-function checkAnswer(btn, selected, correct) {
-    const allBtns = document.getElementById('options-grid').querySelectorAll('button');
-    allBtns.forEach(b => b.disabled = true);
-
-    if(selected === correct) {
-        btn.classList.add('correct');
-        score++;
-    } else {
-        btn.classList.add('wrong');
-        allBtns.forEach(b => {
-            if(b.innerText === correct) b.classList.add('reveal');
-        });
-        const eb = document.getElementById('explanation-box');
-        eb.innerHTML = `<strong>Ошибка!</strong> Правильно: <b>${correct}</b><br>${quizData[current].explain}`;
-        eb.style.display = 'block';
-    }
-    document.getElementById('next-btn').classList.remove('hidden');
-    document.getElementById('hint-btn').classList.add('hidden');
-}
-
-document.getElementById('hint-btn').onclick = () => {
-    const hb = document.getElementById('hint-box');
-    hb.innerHTML = `💡 <b>Подсказка:</b> ${quizData[current].hint}`;
-    hb.style.display = 'block';
-    document.getElementById('hint-btn').classList.add('hidden');
-};
-
-document.getElementById('next-btn').onclick = () => {
-    current++;
-    if(current < 50) {
-        render();
-    } else {
-        showResults();
-    }
-};
-
-function showResults() {
-    document.getElementById('quiz-ui').classList.add('hidden');
-    document.getElementById('result-ui').classList.remove('hidden');
-    document.getElementById('final-score').innerText = `${score} / 50`;
-    
-    let comment = "";
-    if(score === 50) comment = "Невероятно! Вы настоящий мастер Imparfait!";
-    else if(score > 40) comment = "Отличный результат! Почти идеально.";
-    else if(score > 25) comment = "Хороший результат, но есть над чем поработать.";
-    else comment = "Стоит еще раз повторить основы окончаний.";
-    
-    document.getElementById('score-comment').innerText = comment;
-}
-
-// Запуск
-initGame();
-render();
-</script>
+        // Инициализация игры
+        function initGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            questionsAnswered = 0;
+            usedQuestions.clear();
+            updateProgress();
+            resultContainer.style.display = 'none';
+            questionContainer.style.display = 'block';
+            loadRandomQuestion();
+        }
+        
+        // Загрузка случайного вопроса
+        function loadRandomQuestion() {
+            // Если все вопросы использованы, начать заново
+            if (usedQuestions.size >= totalQuestions) {
+                usedQuestions.clear();
+            }
+            
+            // Выбираем случайный вопрос, который еще не использовался
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * totalQuestions);
+            } while (usedQuestions.has(randomIndex));
+            
+            usedQuestions.add(randomIndex);
+            currentQuestion = questions[randomIndex];
+            displayQuestion(currentQuestion);
+        }
+        
+        // Отображение вопроса
+        function displayQuestion(question) {
+            // Создаем HTML для вопроса
+            let questionHTML = `
+                <div class="question-block fade-in">
+                    <div class="question-number">${question.block} | Вопрос ${questionsAnswered + 1}/${totalQuestions}</div>
+                    <div class="question-text">${question.question}</div>
+            `;
+            
+            // Добавляем пример, если есть
+            if (question.example) {
+                questionHTML += `<div class="question-example">${question.example}</div>`;
+            }
+            
+            // Добавляем варианты ответов
+            questionHTML += `<div class="options-container">`;
+            
+            question.options.forEach((option, index) => {
+                questionHTML += `
+                    <div class="option" onclick="selectOption(${index})">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            questionHTML += `</div>`;
+            
+            // Добавляем контейнер для подсказки
+            questionHTML += `
+                <div class="hint-container" id="hintContainer">
+                    <div class="hint-title"><i class="fas fa-lightbulb"></i> Indice</div>
+                    <div class="hint-text" id="hintText"></div>
+                </div>
+            `;
+            
+            // Добавляем контейнер для обратной связи
+            questionHTML += `
+                <div class="feedback-container" id="feedbackContainer">
+                    <div class="feedback-title" id="feedbackTitle"></div>
+                    <div id="feedbackText"></div>
+                </div>
+            `;
+            
+            // Добавляем кнопки
+            questionHTML += `
+                <div class="buttons-container">
+                    <button class="btn btn-hint" onclick="showHint()" id="hintButton">
+                        <i class="fas fa-lightbulb"></i> Indice
+                    </button>
+                    <button class="btn btn-next" onclick="nextQuestion()" id="nextButton" disabled>
+                        <i class="fas fa-arrow-right"></i> Suivant
+                    </button>
+                </div>
+            `;
+            
+            questionContainer.innerHTML = questionHTML;
+            document.getElementById('nextButton').disabled = true;
+            document.getElementById('hintContainer').style.display = 'none';
+            document.getElementById('feedbackContainer').style.display = 'none';
+        }
+        
+        // Выбор варианта ответа
+        function selectOption(selectedIndex) {
+            const options = document.querySelectorAll('.option');
+            const correctIndex = currentQuestion.correctAnswer;
+            const nextButton = document.getElementById('nextButton');
+            const hintButton = document.getElementById('hintButton');
+            
+            // Отключаем все варианты
+            options.forEach(option => {
+                option.style.pointerEvents = 'none';
+            });
+            
+            // Показываем правильный и неправильный ответы
+            options.forEach((option, index) => {
+                if (index === correctIndex) {
+                    option.classList.add('correct');
+                    option.classList.add('pulse');
+                } else if (index === selectedIndex && index !== correctIndex) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Проверяем ответ
+            if (selectedIndex === correctIndex) {
+                score++;
+                showFeedback(true);
+            } else {
+                showFeedback(false);
+            }
+            
+            // Обновляем счет
+            scoreText.textContent = `Score: ${score}`;
+            questionsAnswered++;
+            
+            // Активируем кнопку "Далее"
+            nextButton.disabled = false;
+            hintButton.disabled = true;
+            
+            // Обновляем прогресс
+            updateProgress();
+        }
+        
+        // Показать подсказку
+        function showHint() {
+            const hintContainer = document.getElementById('hintContainer');
+            const hintText = document.getElementById('hintText');
+            
+            hintText.textContent = currentQuestion.hint;
+            hintContainer.style.display = 'block';
+            hintContainer.classList.add('fade-in');
+            
+            // Отключаем кнопку подсказки
+            document.getElementById('hintButton').disabled = true;
+        }
+        
+        // Показать обратную связь
+        function showFeedback(isCorrect) {
+            const feedbackContainer = document.getElementById('feedbackContainer');
+            const feedbackTitle = document.getElementById('feedbackTitle');
+            const feedbackText = document.getElementById('feedbackText');
+            
+            if (isCorrect) {
+                feedbackTitle.innerHTML = `<i class="fas fa-check-circle"></i> Correct!`;
+                feedbackTitle.className = 'feedback-title feedback-correct';
+                feedbackText.textContent = 'Très bien! Vous avez compris la règle.';
+            } else {
+                feedbackTitle.innerHTML = `<i class="fas fa-times-circle"></i> Incorrect`;
+                feedbackTitle.className = 'feedback-title feedback-incorrect';
+                feedbackText.textContent = `La réponse correcte était: "${currentQuestion.options[currentQuestion.correctAnswer]}"`;
+            }
+            
+            feedbackContainer.style.display = 'block';
+            feedbackContainer.classList.add('fade-in');
+        }
+        
+        // Следующий вопрос
+        function nextQuestion() {
+            if (questionsAnswered < totalQuestions) {
+                loadRandomQuestion();
+            } else {
+                showResults();
+            }
+        }
+        
+        // Обновление прогресса
+        function updateProgress() {
+            const progressPercentage = (questionsAnswered / totalQuestions) * 100;
+            progressFill.style.width = `${progressPercentage}%`;
+            progressText.textContent = `Question ${questionsAnswered}/${totalQuestions}`;
+        }
+        
+        // Показать результаты
+        function showResults() {
+            const percentage = Math.round((score / totalQuestions) * 100);
+            
+            // Определяем уровень владения
+            let level, message;
+            if (percentage >= 90) {
+                level = "Expert";
+                message = "Félicitations! Vous maîtrisez parfaitement l'imparfait. Vous pouvez l'utiliser en toute confiance dans vos conversations et écrits.";
+            } else if (percentage >= 70) {
+                level = "Avancé";
+                message = "Très bon travail! Vous comprenez bien l'imparfait et savez généralement quand l'utiliser. Quelques révisions et vous serez parfait!";
+            } else if (percentage >= 50) {
+                level = "Intermédiaire";
+                message = "Bon début! Vous avez compris les bases de l'imparfait, mais avez besoin de plus de pratique pour le maîtriser complètement.";
+            } else {
+                level = "Débutant";
+                message = "Ne vous découragez pas! L'imparfait est un temps important en français. Avec un peu plus de pratique, vous le maîtriserez.";
+            }
+            
+            // Создаем HTML для результатов
+            let resultHTML = `
+                <div class="result-title fade-in">Résultats</div>
+                <div class="result-score">${percentage}%</div>
+                <div class="result-message">${message}</div>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value">${score}/${totalQuestions}</div>
+                        <div class="stat-label">Réponses correctes</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">${level}</div>
+                        <div class="stat-label">Votre niveau</div>
+                    </div>
+                </div>
+                
+                <div class="result-summary">
+                    <h3>Résumé des règles de l'imparfait</h3>
+                    <p><strong>Utilisation:</strong> Habitudes, descriptions, états, actions simultanées, fond dans le passé.</p>
+                    <p><strong>Formation:</strong> Base (nous-forme présent sans -ons) + terminaisons: -ais, -ais, -ait, -ions, -iez, -aient.</p>
+                    <p><strong>Exception:</strong> Être → j'étais, tu étais, il était, nous étions, vous étiez, ils étaient.</p>
+                    <p><strong>Imparfait vs Passé Composé:</strong> Imparfait = actions longues, Passé Composé = actions courtes et ponctuelles.</p>
+                </div>
+                
+                <button class="btn btn-restart" onclick="initGame()">
+                    <i class="fas fa-redo"></i> Rejouer
+                </button>
+            `;
+            
+            resultContainer.innerHTML = resultHTML;
+            questionContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+        }
+        
+        // Запускаем игру при загрузке страницы
+        window.onload = initGame;
+    </script>
 </body>
 </html>
