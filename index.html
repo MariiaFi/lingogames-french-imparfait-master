@@ -36,8 +36,8 @@
             background: white; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.2s; color: var(--text);
         }
         button:hover:not(:disabled) { border-color: var(--primary); background: #f5f3ff; }
-        button.correct { background: var(--success) !important; color: white; border-color: var(--success); }
-        button.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
+        button.correct { background: var(--success) !important; color: white !important; border-color: var(--success); }
+        button.wrong { background: var(--error) !important; color: white !important; border-color: var(--error); }
         button.reveal { border: 2px solid var(--success); color: var(--success); background: #f0fdf4; }
         .feedback { margin-top: 15px; padding: 15px; border-radius: 12px; display: none; font-size: 0.85rem; }
         #explanation-box { background: #fff1f2; color: #991b1b; border-left: 4px solid var(--error); }
@@ -57,10 +57,10 @@
     
     <div id="quiz-ui">
         <div class="meta">
-            <span id="label-tag">Challenge</span>
+            <span id="label-tag">Imparfait Master</span>
             <span id="label-counter">1 / 50</span>
         </div>
-        <div class="sentence-box" id="sentence-display">...</div>
+        <div class="sentence-box" id="sentence-display">Chargement...</div>
         <div class="options-list" id="options-grid"></div>
         
         <div id="hint-box" class="feedback"></div>
@@ -73,87 +73,87 @@
     </div>
 
     <div id="result-ui" class="hidden final-ui">
-        <h2>Mission terminée ! 🏆</h2>
+        <h2>Félicitations ! 🎉</h2>
         <div class="score-num" id="final-score">0/50</div>
         <p id="score-comment"></p>
-        <button class="btn-next" onclick="location.reload()" style="width: 100%; margin-top: 20px;">Recommencer</button>
+        <button class="btn-next" onclick="location.reload()" style="width: 100%; margin-top: 20px;">Rejouer</button>
     </div>
 </div>
 
 <script>
-// База глаголов для генерации 50 уникальных вопросов
+// Расширенная база для гарантии 50+ уникальных комбинаций
 const verbs = [
-    {v: "être", b: "ét", note: "Исключение: основа ét-."},
-    {v: "avoir", b: "av", note: "Основа av- (от nous avons)."},
-    {v: "parler", b: "parl", note: "1-я группа, основа parl-."},
-    {v: "finir", b: "finiss", note: "2-я группа: суффикс -iss-."},
-    {v: "faire", b: "fais", note: "3-я группа, основа fais-."},
-    {v: "aller", b: "all", note: "Основа all-."},
-    {v: "prendre", b: "pren", note: "Основа pren-."},
-    {v: "étudier", b: "étudi", note: "В nous/vous пишется -ii-."},
-    {v: "manger", b: "mange", note: "Сохраняет 'e' перед -a, -o, -u."},
-    {v: "pouvoir", b: "pouv", note: "Основа pouv-."},
-    {v: "vouloir", b: "voul", note: "Основа voul-."},
-    {v: "dire", b: "dis", note: "Основа dis- (от nous disons)."}
+    {v: "être", b: "ét", n: "Исключение: основа ét-."},
+    {v: "avoir", b: "av", n: "Основа av- (от nous avons)."},
+    {v: "parler", b: "parl", n: "1-я группа, основа parl-."},
+    {v: "finir", b: "finiss", n: "2-я группа: суффикс -iss-."},
+    {v: "faire", b: "fais", n: "Основа fais-."},
+    {v: "aller", b: "all", n: "Основа all-."},
+    {v: "prendre", b: "pren", n: "Основа pren-."},
+    {v: "vouloir", b: "voul", n: "Основа voul-."},
+    {v: "venir", b: "ven", n: "Основа ven-."},
+    {v: "dire", b: "dis", n: "Основа dis-."},
+    {v: "voir", b: "voy", n: "Основа voy-."},
+    {v: "pouvoir", b: "pouv", n: "Основа pouv-."}
 ];
 
 const subjects = [
     {p: "Je", t: "ais"}, {p: "Tu", t: "ais"}, {p: "Il", t: "ait"}, 
-    {p: "Nous", t: "ions"}, {p: "Vous", t: "iez"}, {p: "Ils", t: "aient"}
+    {p: "Elle", t: "ait"}, {p: "Nous", t: "ions"}, {p: "Vous", t: "iez"}, 
+    {p: "Ils", t: "aient"}, {p: "Elles", t: "aient"}
 ];
 
-const contexts = ["autrefois", "souvent", "toujours", "chaque jour", "à cette époque"];
+const contexts = ["autrefois", "souvent", "toujours", "chaque jour", "à cette époque", "pendant les vacances"];
 
 let quizData = [];
-let usedPairs = new Set();
+let usedKeys = new Set();
 
-// Генерация 50 строго уникальных вопросов
-while(quizData.length < 50) {
-    const v = verbs[Math.floor(Math.random() * verbs.length)];
-    const s = subjects[Math.floor(Math.random() * subjects.length)];
-    const id = `${v.v}-${s.p}`;
+// Безопасная генерация данных
+function generateQuiz() {
+    let attempts = 0;
+    while(quizData.length < 50 && attempts < 1000) {
+        attempts++;
+        const v = verbs[Math.floor(Math.random() * verbs.length)];
+        const s = subjects[Math.floor(Math.random() * subjects.length)];
+        const key = `${v.v}-${s.p}`;
 
-    if(!usedPairs.has(id)) {
-        usedPairs.add(id);
-        
-        // Корректировка для глаголов на -ger (manger)
-        let correctStem = v.b;
-        if(v.v === "manger" && (s.t.startsWith('i'))) {
-            correctStem = "mang"; // Убираем 'e' перед 'i'
+        if(!usedKeys.has(key)) {
+            usedKeys.add(key);
+            const correctAns = v.b + s.t;
+            
+            // Дистракторы (неправильные варианты)
+            let distractors = subjects
+                .filter(x => x.t !== s.t)
+                .map(x => v.b + x.t)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 2);
+
+            quizData.push({
+                q: `${s.p} ___ (${v.v}) ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
+                ans: correctAns,
+                opts: [correctAns, ...distractors],
+                explain: `${v.n} Окончание для ${s.p} — это -${s.t}.`,
+                hint: `Вспомните окончание для ${s.p}.`
+            });
         }
-
-        const answer = correctStem + s.t;
-        
-        // Генерируем уникальные дистракторы (ошибки в окончаниях)
-        let alt = subjects.filter(x => x.t !== s.t).map(x => v.b + x.t);
-        let shuffledAlt = alt.sort(() => 0.5 - Math.random()).slice(0, 2);
-
-        quizData.push({
-            type: v.v === "être" ? "Irrégulier" : "Verbe",
-            text: `${s.p} ___ (${v.v}) ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
-            ans: answer,
-            opts: [answer, ...shuffledAlt],
-            hint: `Для подлежащего "${s.p}" нужно специфическое окончание.`,
-            explain: `${v.note} Для "${s.p}" окончание -${s.t}.`
-        });
     }
 }
 
-let currentIdx = 0;
-let correctCount = 0;
+let current = 0;
+let score = 0;
 
-function shuffle(arr) {
-    return arr.sort(() => Math.random() - 0.5);
+function shuffle(array) {
+    return array.sort(() => Math.random() - 0.5);
 }
 
-function renderQuestion() {
-    const q = quizData[currentIdx];
-    const shuffledOpts = shuffle([...q.opts]);
+function render() {
+    const data = quizData[current];
+    const shuffledOpts = shuffle([...data.opts]);
 
-    document.getElementById('progress-fill').style.width = `${((currentIdx + 1) / 50) * 100}%`;
-    document.getElementById('label-counter').innerText = `${currentIdx + 1} / 50`;
-    document.getElementById('label-tag').innerText = q.type;
-    document.getElementById('sentence-display').innerText = q.text;
+    // UI Reset
+    document.getElementById('progress-fill').style.width = `${((current + 1) / 50) * 100}%`;
+    document.getElementById('label-counter').innerText = `${current + 1} / 50`;
+    document.getElementById('sentence-display').innerText = data.q;
     document.getElementById('explanation-box').style.display = 'none';
     document.getElementById('hint-box').style.display = 'none';
     document.getElementById('next-btn').classList.add('hidden');
@@ -166,17 +166,19 @@ function renderQuestion() {
         const btn = document.createElement('button');
         btn.innerText = opt;
         btn.onclick = () => {
-            const btns = grid.querySelectorAll('button');
-            btns.forEach(b => b.disabled = true);
+            const allBtns = grid.querySelectorAll('button');
+            allBtns.forEach(b => b.disabled = true);
 
-            if(opt === q.ans) {
+            if(opt === data.ans) {
                 btn.classList.add('correct');
-                correctCount++;
+                score++;
             } else {
                 btn.classList.add('wrong');
-                btns.forEach(b => { if(b.innerText === q.ans) b.classList.add('reveal'); });
+                allBtns.forEach(b => {
+                    if(b.innerText === data.ans) b.classList.add('reveal');
+                });
                 const eb = document.getElementById('explanation-box');
-                eb.innerHTML = `<strong>Attention !</strong><br>Правильный ответ: <b>${q.ans}</b>. ${q.explain}`;
+                eb.innerHTML = `<strong>Faux.</strong> Ответ: <b>${data.ans}</b>. ${data.explain}`;
                 eb.style.display = 'block';
             }
             document.getElementById('next-btn').classList.remove('hidden');
@@ -188,31 +190,23 @@ function renderQuestion() {
 
 document.getElementById('hint-btn').onclick = () => {
     const hb = document.getElementById('hint-box');
-    hb.innerText = "Indice : " + quizData[currentIdx].hint;
+    hb.innerText = "Indice: " + quizData[current].hint;
     hb.style.display = 'block';
 };
 
 document.getElementById('next-btn').onclick = () => {
-    currentIdx++;
-    if(currentIdx < 50) {
-        renderQuestion();
-    } else {
-        showResults();
+    current++;
+    if(current < 50) render();
+    else {
+        document.getElementById('quiz-ui').classList.add('hidden');
+        document.getElementById('result-ui').classList.remove('hidden');
+        document.getElementById('final-score').innerText = `${score} / 50`;
     }
 };
 
-function showResults() {
-    document.getElementById('quiz-ui').classList.add('hidden');
-    document.getElementById('result-ui').classList.remove('hidden');
-    document.getElementById('final-score').innerText = `${correctCount} / 50`;
-    
-    let msg = "Continuez à pratiquer !";
-    if(correctCount > 45) msg = "Magnifique ! Vous êtes un expert !";
-    else if(correctCount > 35) msg = "Très bien ! Presque parfait !";
-    document.getElementById('score-comment').innerText = msg;
-}
-
-renderQuestion();
+// Start
+generateQuiz();
+render();
 </script>
 </body>
 </html>
