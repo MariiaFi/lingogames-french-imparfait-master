@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>French Imparfait Master | Pro Edition</title>
+    <title>Imparfait Elite | 50 Défis</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #4f46e5; --bg: #f8fafc; --card: #ffffff;
-            --text: #0f172a; --success: #10b981; --error: #ef4444; --accent: #f59e0b;
+            --primary: #6366f1; --bg: #f1f5f9; --card: #ffffff;
+            --text: #1e293b; --success: #22c55e; --error: #ef4444; --accent: #f59e0b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -16,38 +16,38 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px;
         }
         #game-card {
-            width: 100%; max-width: 500px; background: var(--card); border-radius: 24px;
-            padding: 40px 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); position: relative;
+            width: 100%; max-width: 480px; background: var(--card); border-radius: 24px;
+            padding: 35px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); position: relative;
         }
         .progress-bar {
-            position: absolute; top: 0; left: 0; width: 100%; height: 8px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 6px;
             background: #e2e8f0; border-radius: 24px 24px 0 0; overflow: hidden;
         }
-        #progress-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.4s; }
-        .meta { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: #94a3b8; }
+        #progress-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.3s; }
+        .meta { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; }
         .sentence-box {
-            font-size: 1.3rem; font-weight: 500; text-align: center; padding: 25px;
-            background: #f1f5f9; border-radius: 18px; margin-bottom: 25px; min-height: 110px;
-            display: flex; align-items: center; justify-content: center; line-height: 1.5;
+            font-size: 1.25rem; font-weight: 600; text-align: center; padding: 30px 20px;
+            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; margin-bottom: 20px; min-height: 100px;
+            display: flex; align-items: center; justify-content: center; line-height: 1.4;
         }
-        .options-list { display: grid; gap: 10px; }
+        .options-list { display: grid; gap: 12px; }
         button {
-            padding: 16px; border: 2px solid #e2e8f0; border-radius: 12px;
-            background: white; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: 0.2s; outline: none;
+            padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px;
+            background: white; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.2s; color: var(--text);
         }
-        button:hover:not(:disabled) { border-color: var(--primary); transform: translateY(-2px); }
+        button:hover:not(:disabled) { border-color: var(--primary); background: #f5f3ff; }
         button.correct { background: var(--success) !important; color: white; border-color: var(--success); }
         button.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
-        button.reveal-correct { border: 2px solid var(--success); color: var(--success); }
-        .feedback { margin-top: 15px; padding: 15px; border-radius: 12px; display: none; font-size: 0.9rem; line-height: 1.5; }
-        #explanation-box { background: #fef2f2; color: #991b1b; border-left: 4px solid var(--error); }
+        button.reveal { border: 2px solid var(--success); color: var(--success); background: #f0fdf4; }
+        .feedback { margin-top: 15px; padding: 15px; border-radius: 12px; display: none; font-size: 0.85rem; }
+        #explanation-box { background: #fff1f2; color: #991b1b; border-left: 4px solid var(--error); }
         #hint-box { background: #fffbeb; color: #92400e; border-left: 4px solid var(--accent); }
-        .footer { margin-top: 30px; display: flex; gap: 10px; }
-        .btn-next { background: var(--text); color: white; flex: 2; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; padding: 15px; }
+        .footer { margin-top: 25px; display: flex; gap: 10px; }
+        .btn-next { background: var(--text); color: white; flex: 2; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; padding: 16px; }
         .btn-hint { background: transparent; color: var(--accent); border: 2px solid var(--accent); flex: 1; border-radius: 12px; cursor: pointer; font-weight: 600; }
         .hidden { display: none; }
         .final-ui { text-align: center; }
-        .score-display { font-size: 5rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
+        .score-num { font-size: 4rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
     </style>
 </head>
 <body>
@@ -57,8 +57,8 @@
     
     <div id="quiz-ui">
         <div class="meta">
-            <span id="label-block">Niveau</span>
-            <span id="label-counter">0 / 100</span>
+            <span id="label-tag">Challenge</span>
+            <span id="label-counter">1 / 50</span>
         </div>
         <div class="sentence-box" id="sentence-display">...</div>
         <div class="options-list" id="options-grid"></div>
@@ -73,85 +73,87 @@
     </div>
 
     <div id="result-ui" class="hidden final-ui">
-        <h1>Excellent ! 🏆</h1>
-        <p>Ваш итоговый результат:</p>
-        <div class="score-display" id="final-score">0%</div>
-        <button class="btn-next" onclick="location.reload()" style="width: 100%;">Rejouer</button>
+        <h2>Mission terminée ! 🏆</h2>
+        <div class="score-num" id="final-score">0/50</div>
+        <p id="score-comment"></p>
+        <button class="btn-next" onclick="location.reload()" style="width: 100%; margin-top: 20px;">Recommencer</button>
     </div>
 </div>
 
 <script>
-// --- КОНТЕНТ И ГЕНЕРАЦИЯ ---
-const baseVerbs = [
-    {v: "être", base: "ét", e: "Исключение! Основа ét-."},
-    {v: "avoir", base: "av", e: "Основа av- (nous avons)."},
-    {v: "parler", base: "parl", e: "1 группа, основа parl-."},
-    {v: "finir", base: "finiss", e: "2 группа, обязателен суффикс -iss-."},
-    {v: "choisir", base: "choisiss", e: "2 группа, суффикс -iss-."},
-    {v: "faire", base: "fais", e: "3 группа, основа fais-."},
-    {v: "aller", base: "all", e: "Основа all-."},
-    {v: "prendre", base: "pren", e: "Основа pren- (nous prenons)."},
-    {v: "vouloir", base: "voul", e: "Основа voul- (nous voulons)."},
-    {v: "étudier", base: "étudi", e: "Глагол на -ier, в nous/vous будет две 'i'."}
+// База глаголов для генерации 50 уникальных вопросов
+const verbs = [
+    {v: "être", b: "ét", note: "Исключение: основа ét-."},
+    {v: "avoir", b: "av", note: "Основа av- (от nous avons)."},
+    {v: "parler", b: "parl", note: "1-я группа, основа parl-."},
+    {v: "finir", b: "finiss", note: "2-я группа: суффикс -iss-."},
+    {v: "faire", b: "fais", note: "3-я группа, основа fais-."},
+    {v: "aller", b: "all", note: "Основа all-."},
+    {v: "prendre", b: "pren", note: "Основа pren-."},
+    {v: "étudier", b: "étudi", note: "В nous/vous пишется -ii-."},
+    {v: "manger", b: "mange", note: "Сохраняет 'e' перед -a, -o, -u."},
+    {v: "pouvoir", b: "pouv", note: "Основа pouv-."},
+    {v: "vouloir", b: "voul", note: "Основа voul-."},
+    {v: "dire", b: "dis", note: "Основа dis- (от nous disons)."}
 ];
 
-const subjs = [
+const subjects = [
     {p: "Je", t: "ais"}, {p: "Tu", t: "ais"}, {p: "Il", t: "ait"}, 
     {p: "Nous", t: "ions"}, {p: "Vous", t: "iez"}, {p: "Ils", t: "aient"}
 ];
 
-const contexts = ["autrefois", "souvent", "toujours", "tous les matins", "quand j'étais jeune"];
+const contexts = ["autrefois", "souvent", "toujours", "chaque jour", "à cette époque"];
 
 let quizData = [];
-let usedKeys = new Set();
+let usedPairs = new Set();
 
-// Генерируем 100 уникальных вопросов
-while(quizData.length < 100) {
-    const v = baseVerbs[Math.floor(Math.random() * baseVerbs.length)];
-    const s = subjs[Math.floor(Math.random() * subjs.length)];
-    const key = `${v.v}-${s.p}`;
+// Генерация 50 строго уникальных вопросов
+while(quizData.length < 50) {
+    const v = verbs[Math.floor(Math.random() * verbs.length)];
+    const s = subjects[Math.floor(Math.random() * subjects.length)];
+    const id = `${v.v}-${s.p}`;
 
-    if(!usedKeys.has(key)) {
-        usedKeys.add(key);
-        const correct = v.base + s.t;
+    if(!usedPairs.has(id)) {
+        usedPairs.add(id);
         
-        // Создаем дистракторы из окончаний других лиц для того же глагола
-        let alt = subjs.filter(x => x.t !== s.t).map(x => v.base + x.t);
+        // Корректировка для глаголов на -ger (manger)
+        let correctStem = v.b;
+        if(v.v === "manger" && (s.t.startsWith('i'))) {
+            correctStem = "mang"; // Убираем 'e' перед 'i'
+        }
+
+        const answer = correctStem + s.t;
+        
+        // Генерируем уникальные дистракторы (ошибки в окончаниях)
+        let alt = subjects.filter(x => x.t !== s.t).map(x => v.b + x.t);
         let shuffledAlt = alt.sort(() => 0.5 - Math.random()).slice(0, 2);
 
         quizData.push({
-            b: v.v === "être" ? "Irrégulier" : "Pratique",
-            s: `${s.p} ___ (${v.v}) ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
-            o: [correct, ...shuffledAlt],
-            a: correct,
-            h: `Посмотрите на подлежащее "${s.p}". Какое окончание ему соответствует?`,
-            e: `${v.e} Окончание для ${s.p} — это -${s.t}.`
+            type: v.v === "être" ? "Irrégulier" : "Verbe",
+            text: `${s.p} ___ (${v.v}) ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
+            ans: answer,
+            opts: [answer, ...shuffledAlt],
+            hint: `Для подлежащего "${s.p}" нужно специфическое окончание.`,
+            explain: `${v.note} Для "${s.p}" окончание -${s.t}.`
         });
     }
-    
-    // Если базовых глаголов мало для 100 уникальных пар, добавим немного "синтетических" для примера
-    if(usedKeys.size === baseVerbs.length * subjs.length) break; 
 }
 
-// --- ЛОГИКА ---
-let current = 0; let score = 0;
+let currentIdx = 0;
+let correctCount = 0;
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
+function shuffle(arr) {
+    return arr.sort(() => Math.random() - 0.5);
 }
 
-function render() {
-    const q = quizData[current];
-    const options = shuffle([...q.o]);
+function renderQuestion() {
+    const q = quizData[currentIdx];
+    const shuffledOpts = shuffle([...q.opts]);
 
-    document.getElementById('progress-fill').style.width = `${current + 1}%`;
-    document.getElementById('label-counter').innerText = `${current + 1} / ${quizData.length}`;
-    document.getElementById('label-block').innerText = q.b;
-    document.getElementById('sentence-display').innerText = q.s;
+    document.getElementById('progress-fill').style.width = `${((currentIdx + 1) / 50) * 100}%`;
+    document.getElementById('label-counter').innerText = `${currentIdx + 1} / 50`;
+    document.getElementById('label-tag').innerText = q.type;
+    document.getElementById('sentence-display').innerText = q.text;
     document.getElementById('explanation-box').style.display = 'none';
     document.getElementById('hint-box').style.display = 'none';
     document.getElementById('next-btn').classList.add('hidden');
@@ -160,24 +162,21 @@ function render() {
     const grid = document.getElementById('options-grid');
     grid.innerHTML = '';
 
-    options.forEach(opt => {
+    shuffledOpts.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerText = opt;
         btn.onclick = () => {
             const btns = grid.querySelectorAll('button');
             btns.forEach(b => b.disabled = true);
 
-            if(opt === q.a) {
+            if(opt === q.ans) {
                 btn.classList.add('correct');
-                score++;
+                correctCount++;
             } else {
                 btn.classList.add('wrong');
-                // Показываем правильный ответ
-                btns.forEach(b => {
-                    if(b.innerText === q.a) b.classList.add('reveal-correct');
-                });
+                btns.forEach(b => { if(b.innerText === q.ans) b.classList.add('reveal'); });
                 const eb = document.getElementById('explanation-box');
-                eb.innerHTML = `<b>Неверно!</b><br>Правильный ответ: <b>${q.a}</b>. ${q.e}`;
+                eb.innerHTML = `<strong>Attention !</strong><br>Правильный ответ: <b>${q.ans}</b>. ${q.explain}`;
                 eb.style.display = 'block';
             }
             document.getElementById('next-btn').classList.remove('hidden');
@@ -189,21 +188,31 @@ function render() {
 
 document.getElementById('hint-btn').onclick = () => {
     const hb = document.getElementById('hint-box');
-    hb.innerText = "Indice : " + quizData[current].h;
+    hb.innerText = "Indice : " + quizData[currentIdx].hint;
     hb.style.display = 'block';
 };
 
 document.getElementById('next-btn').onclick = () => {
-    current++;
-    if(current < quizData.length) render();
-    else {
-        document.getElementById('quiz-ui').classList.add('hidden');
-        document.getElementById('result-ui').classList.remove('hidden');
-        document.getElementById('final-score').innerText = Math.round((score/quizData.length)*100) + "%";
+    currentIdx++;
+    if(currentIdx < 50) {
+        renderQuestion();
+    } else {
+        showResults();
     }
 };
 
-render();
+function showResults() {
+    document.getElementById('quiz-ui').classList.add('hidden');
+    document.getElementById('result-ui').classList.remove('hidden');
+    document.getElementById('final-score').innerText = `${correctCount} / 50`;
+    
+    let msg = "Continuez à pratiquer !";
+    if(correctCount > 45) msg = "Magnifique ! Vous êtes un expert !";
+    else if(correctCount > 35) msg = "Très bien ! Presque parfait !";
+    document.getElementById('score-comment').innerText = msg;
+}
+
+renderQuestion();
 </script>
 </body>
 </html>
