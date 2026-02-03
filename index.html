@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imparfait Elite | 50 Défis</title>
+    <title>Imparfait Elite | 50 Уникальных Заданий</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1; --bg: #f1f5f9; --card: #ffffff;
-            --text: #1e293b; --success: #22c55e; --error: #ef4444; --accent: #f59e0b;
+            --primary: #6366f1; --bg: #f8fafc; --card: #ffffff;
+            --text: #0f172a; --success: #10b981; --error: #f43f5e; --accent: #f59e0b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
@@ -16,38 +16,39 @@
             display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px;
         }
         #game-card {
-            width: 100%; max-width: 480px; background: var(--card); border-radius: 24px;
-            padding: 35px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); position: relative;
+            width: 100%; max-width: 500px; background: var(--card); border-radius: 24px;
+            padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); position: relative;
         }
         .progress-bar {
-            position: absolute; top: 0; left: 0; width: 100%; height: 6px;
+            position: absolute; top: 0; left: 0; width: 100%; height: 8px;
             background: #e2e8f0; border-radius: 24px 24px 0 0; overflow: hidden;
         }
-        #progress-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.3s; }
-        .meta { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 0.75rem; font-weight: 800; color: #64748b; text-transform: uppercase; }
+        #progress-fill { height: 100%; width: 0%; background: var(--primary); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .meta { display: flex; justify-content: space-between; margin-bottom: 25px; font-size: 0.8rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
         .sentence-box {
-            font-size: 1.25rem; font-weight: 600; text-align: center; padding: 30px 20px;
-            background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 16px; margin-bottom: 20px; min-height: 100px;
-            display: flex; align-items: center; justify-content: center; line-height: 1.4;
+            font-size: 1.4rem; font-weight: 600; text-align: center; padding: 40px 20px;
+            background: #f1f5f9; border-radius: 20px; margin-bottom: 25px; min-height: 120px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
         }
+        .verb-hint { font-size: 0.9rem; color: var(--primary); font-weight: 400; }
         .options-list { display: grid; gap: 12px; }
         button {
-            padding: 14px; border: 2px solid #e2e8f0; border-radius: 12px;
-            background: white; cursor: pointer; font-size: 1rem; font-weight: 600; transition: 0.2s; color: var(--text);
+            padding: 16px; border: 2px solid #e2e8f0; border-radius: 14px;
+            background: white; cursor: pointer; font-size: 1.1rem; font-weight: 600; transition: 0.2s; color: var(--text);
         }
-        button:hover:not(:disabled) { border-color: var(--primary); background: #f5f3ff; }
+        button:hover:not(:disabled) { border-color: var(--primary); background: #eff6ff; }
         button.correct { background: var(--success) !important; color: white !important; border-color: var(--success); }
         button.wrong { background: var(--error) !important; color: white !important; border-color: var(--error); }
-        button.reveal { border: 2px solid var(--success); color: var(--success); background: #f0fdf4; }
-        .feedback { margin-top: 15px; padding: 15px; border-radius: 12px; display: none; font-size: 0.85rem; }
-        #explanation-box { background: #fff1f2; color: #991b1b; border-left: 4px solid var(--error); }
-        #hint-box { background: #fffbeb; color: #92400e; border-left: 4px solid var(--accent); }
-        .footer { margin-top: 25px; display: flex; gap: 10px; }
-        .btn-next { background: var(--text); color: white; flex: 2; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; padding: 16px; }
-        .btn-hint { background: transparent; color: var(--accent); border: 2px solid var(--accent); flex: 1; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        button.reveal { border: 2px solid var(--success); color: var(--success); background: #ecfdf5; }
+        .feedback { margin-top: 20px; padding: 18px; border-radius: 14px; display: none; font-size: 0.95rem; line-height: 1.5; }
+        #explanation-box { background: #fef2f2; color: #991b1b; border-left: 5px solid var(--error); }
+        #hint-box { background: #fffbeb; color: #92400e; border-left: 5px solid var(--accent); }
+        .footer { margin-top: 30px; display: flex; gap: 12px; }
+        .btn-next { background: var(--text); color: white; flex: 2; border: none; border-radius: 14px; cursor: pointer; font-weight: 700; padding: 18px; font-size: 1rem; }
+        .btn-hint { background: transparent; color: var(--accent); border: 2px solid var(--accent); flex: 1; border-radius: 14px; cursor: pointer; font-weight: 700; }
         .hidden { display: none; }
-        .final-ui { text-align: center; }
-        .score-num { font-size: 4rem; font-weight: 900; color: var(--primary); margin: 15px 0; }
+        .final-ui { text-align: center; padding: 20px 0; }
+        .score-num { font-size: 4.5rem; font-weight: 900; color: var(--primary); margin: 20px 0; }
     </style>
 </head>
 <body>
@@ -57,44 +58,52 @@
     
     <div id="quiz-ui">
         <div class="meta">
-            <span id="label-tag">Imparfait Master</span>
+            <span>Imparfait Эксперт</span>
             <span id="label-counter">1 / 50</span>
         </div>
-        <div class="sentence-box" id="sentence-display">Chargement...</div>
+        <div class="sentence-box">
+            <div id="sentence-display">...</div>
+            <div id="verb-info" class="verb-hint"></div>
+        </div>
         <div class="options-list" id="options-grid"></div>
         
         <div id="hint-box" class="feedback"></div>
         <div id="explanation-box" class="feedback"></div>
 
         <div class="footer">
-            <button id="hint-btn" class="btn-hint">Indice 💡</button>
-            <button id="next-btn" class="btn-next hidden">Suivant ➔</button>
+            <button id="hint-btn" class="btn-hint">Подсказка 💡</button>
+            <button id="next-btn" class="btn-next hidden">Далее ➔</button>
         </div>
     </div>
 
     <div id="result-ui" class="hidden final-ui">
-        <h2>Félicitations ! 🎉</h2>
+        <h2>Тест завершен! 🎉</h2>
         <div class="score-num" id="final-score">0/50</div>
-        <p id="score-comment"></p>
-        <button class="btn-next" onclick="location.reload()" style="width: 100%; margin-top: 20px;">Rejouer</button>
+        <p id="score-comment" style="margin-bottom: 25px; color: #64748b;"></p>
+        <button class="btn-next" onclick="location.reload()" style="width: 100%;">Попробовать снова</button>
     </div>
 </div>
 
 <script>
-// Расширенная база для гарантии 50+ уникальных комбинаций
 const verbs = [
-    {v: "être", b: "ét", n: "Исключение: основа ét-."},
-    {v: "avoir", b: "av", n: "Основа av- (от nous avons)."},
-    {v: "parler", b: "parl", n: "1-я группа, основа parl-."},
-    {v: "finir", b: "finiss", n: "2-я группа: суффикс -iss-."},
-    {v: "faire", b: "fais", n: "Основа fais-."},
-    {v: "aller", b: "all", n: "Основа all-."},
-    {v: "prendre", b: "pren", n: "Основа pren-."},
-    {v: "vouloir", b: "voul", n: "Основа voul-."},
-    {v: "venir", b: "ven", n: "Основа ven-."},
-    {v: "dire", b: "dis", n: "Основа dis-."},
-    {v: "voir", b: "voy", n: "Основа voy-."},
-    {v: "pouvoir", b: "pouv", n: "Основа pouv-."}
+    {v: "être", b: "ét", n: "Исключение! Основа ét-"},
+    {v: "avoir", b: "av", n: "Основа av- (nous avons)"},
+    {v: "parler", b: "parl", n: "1-я группа, основа parl-"},
+    {v: "finir", b: "finiss", n: "2-я группа, суффикс -iss-"},
+    {v: "faire", b: "fais", n: "Основа fais- (nous faisons)"},
+    {v: "aller", b: "all", n: "Основа all-"},
+    {v: "prendre", b: "pren", n: "Основа pren- (nous prenons)"},
+    {v: "vouloir", b: "voul", n: "Основа voul-"},
+    {v: "venir", b: "ven", n: "Основа ven-"},
+    {v: "dire", b: "dis", n: "Основа dis- (nous disons)"},
+    {v: "voir", b: "voy", n: "Основа voy- (nous voyons)"},
+    {v: "pouvoir", b: "pouv", n: "Основа pouv-"},
+    {v: "devoir", b: "dev", n: "Основа dev-"},
+    {v: "savoir", b: "sav", n: "Основа sav- (nous savons)"},
+    {v: "lire", b: "lis", n: "Основа lis- (nous lisons)"},
+    {v: "écrire", b: "écriv", n: "Основа écriv- (nous écrivons)"},
+    {v: "partir", b: "part", n: "Основа part-"},
+    {v: "mettre", b: "mett", n: "Основа mett-"}
 ];
 
 const subjects = [
@@ -103,109 +112,127 @@ const subjects = [
     {p: "Ils", t: "aient"}, {p: "Elles", t: "aient"}
 ];
 
-const contexts = ["autrefois", "souvent", "toujours", "chaque jour", "à cette époque", "pendant les vacances"];
+const contexts = [
+    "quand j'étais petit", "chaque été", "tous les jours", "à cette époque-là", 
+    "souvent", "toujours", "pendant les vacances", "autrefois", "le soir"
+];
 
 let quizData = [];
-let usedKeys = new Set();
-
-// Безопасная генерация данных
-function generateQuiz() {
-    let attempts = 0;
-    while(quizData.length < 50 && attempts < 1000) {
-        attempts++;
-        const v = verbs[Math.floor(Math.random() * verbs.length)];
-        const s = subjects[Math.floor(Math.random() * subjects.length)];
-        const key = `${v.v}-${s.p}`;
-
-        if(!usedKeys.has(key)) {
-            usedKeys.add(key);
-            const correctAns = v.b + s.t;
-            
-            // Дистракторы (неправильные варианты)
-            let distractors = subjects
-                .filter(x => x.t !== s.t)
-                .map(x => v.b + x.t)
-                .sort(() => 0.5 - Math.random())
-                .slice(0, 2);
-
-            quizData.push({
-                q: `${s.p} ___ (${v.v}) ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
-                ans: correctAns,
-                opts: [correctAns, ...distractors],
-                explain: `${v.n} Окончание для ${s.p} — это -${s.t}.`,
-                hint: `Вспомните окончание для ${s.p}.`
-            });
-        }
-    }
-}
-
 let current = 0;
 let score = 0;
 
-function shuffle(array) {
-    return array.sort(() => Math.random() - 0.5);
+function initGame() {
+    let combinations = [];
+    // Создаем все возможные уникальные комбинации
+    verbs.forEach(v => {
+        subjects.forEach(s => {
+            combinations.push({ v, s });
+        });
+    });
+
+    // Перемешиваем комбинации
+    combinations.sort(() => Math.random() - 0.5);
+
+    // Берем первые 50
+    for(let i = 0; i < 50; i++) {
+        const item = combinations[i];
+        const correct = item.v.b + item.s.t;
+        
+        // Генерация неправильных вариантов (другие окончания той же основы)
+        let distractors = subjects
+            .filter(x => x.t !== item.s.t)
+            .map(x => item.v.b + x.t);
+        
+        // Перемешиваем дистракторы и берем 2
+        distractors = distractors.sort(() => Math.random() - 0.5).slice(0, 2);
+
+        quizData.push({
+            sentence: `${item.s.p} _______ ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
+            verbName: `Глагол: ${item.v.v}`,
+            ans: correct,
+            opts: [correct, ...distractors],
+            explain: `${item.v.n}. Для местоимения <b>${item.s.p}</b> используется окончание <b>-${item.s.t}</b>.`,
+            hint: `Ищите основу "${item.v.b}" и окончание для "${item.s.p}".`
+        });
+    }
 }
 
 function render() {
     const data = quizData[current];
-    const shuffledOpts = shuffle([...data.opts]);
+    const grid = document.getElementById('options-grid');
+    const shuffledOpts = [...data.opts].sort(() => Math.random() - 0.5);
 
-    // UI Reset
     document.getElementById('progress-fill').style.width = `${((current + 1) / 50) * 100}%`;
     document.getElementById('label-counter').innerText = `${current + 1} / 50`;
-    document.getElementById('sentence-display').innerText = data.q;
+    document.getElementById('sentence-display').innerText = data.sentence;
+    document.getElementById('verb-info').innerText = data.verbName;
+    
     document.getElementById('explanation-box').style.display = 'none';
     document.getElementById('hint-box').style.display = 'none';
     document.getElementById('next-btn').classList.add('hidden');
     document.getElementById('hint-btn').classList.remove('hidden');
 
-    const grid = document.getElementById('options-grid');
     grid.innerHTML = '';
-
     shuffledOpts.forEach(opt => {
         const btn = document.createElement('button');
         btn.innerText = opt;
-        btn.onclick = () => {
-            const allBtns = grid.querySelectorAll('button');
-            allBtns.forEach(b => b.disabled = true);
-
-            if(opt === data.ans) {
-                btn.classList.add('correct');
-                score++;
-            } else {
-                btn.classList.add('wrong');
-                allBtns.forEach(b => {
-                    if(b.innerText === data.ans) b.classList.add('reveal');
-                });
-                const eb = document.getElementById('explanation-box');
-                eb.innerHTML = `<strong>Faux.</strong> Ответ: <b>${data.ans}</b>. ${data.explain}`;
-                eb.style.display = 'block';
-            }
-            document.getElementById('next-btn').classList.remove('hidden');
-            document.getElementById('hint-btn').classList.add('hidden');
-        };
+        btn.onclick = () => checkAnswer(btn, opt, data.ans);
         grid.appendChild(btn);
     });
 }
 
+function checkAnswer(btn, selected, correct) {
+    const allBtns = document.getElementById('options-grid').querySelectorAll('button');
+    allBtns.forEach(b => b.disabled = true);
+
+    if(selected === correct) {
+        btn.classList.add('correct');
+        score++;
+    } else {
+        btn.classList.add('wrong');
+        allBtns.forEach(b => {
+            if(b.innerText === correct) b.classList.add('reveal');
+        });
+        const eb = document.getElementById('explanation-box');
+        eb.innerHTML = `<strong>Ошибка!</strong> Правильно: <b>${correct}</b><br>${quizData[current].explain}`;
+        eb.style.display = 'block';
+    }
+    document.getElementById('next-btn').classList.remove('hidden');
+    document.getElementById('hint-btn').classList.add('hidden');
+}
+
 document.getElementById('hint-btn').onclick = () => {
     const hb = document.getElementById('hint-box');
-    hb.innerText = "Indice: " + quizData[current].hint;
+    hb.innerHTML = `💡 <b>Подсказка:</b> ${quizData[current].hint}`;
     hb.style.display = 'block';
+    document.getElementById('hint-btn').classList.add('hidden');
 };
 
 document.getElementById('next-btn').onclick = () => {
     current++;
-    if(current < 50) render();
-    else {
-        document.getElementById('quiz-ui').classList.add('hidden');
-        document.getElementById('result-ui').classList.remove('hidden');
-        document.getElementById('final-score').innerText = `${score} / 50`;
+    if(current < 50) {
+        render();
+    } else {
+        showResults();
     }
 };
 
-// Start
-generateQuiz();
+function showResults() {
+    document.getElementById('quiz-ui').classList.add('hidden');
+    document.getElementById('result-ui').classList.remove('hidden');
+    document.getElementById('final-score').innerText = `${score} / 50`;
+    
+    let comment = "";
+    if(score === 50) comment = "Невероятно! Вы настоящий мастер Imparfait!";
+    else if(score > 40) comment = "Отличный результат! Почти идеально.";
+    else if(score > 25) comment = "Хороший результат, но есть над чем поработать.";
+    else comment = "Стоит еще раз повторить основы окончаний.";
+    
+    document.getElementById('score-comment').innerText = comment;
+}
+
+// Запуск
+initGame();
 render();
 </script>
 </body>
