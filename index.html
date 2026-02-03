@@ -33,12 +33,12 @@
         .options-list { display: grid; gap: 10px; }
         button {
             padding: 16px; border: 2px solid #e2e8f0; border-radius: 12px;
-            background: white; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: 0.2s;
+            background: white; cursor: pointer; font-size: 1.05rem; font-weight: 600; transition: 0.2s; outline: none;
         }
         button:hover:not(:disabled) { border-color: var(--primary); transform: translateY(-2px); }
         button.correct { background: var(--success) !important; color: white; border-color: var(--success); }
         button.wrong { background: var(--error) !important; color: white; border-color: var(--error); }
-        button.missed { border: 2px dashed var(--success); color: var(--success); }
+        button.reveal-correct { border: 2px solid var(--success); color: var(--success); }
         .feedback { margin-top: 15px; padding: 15px; border-radius: 12px; display: none; font-size: 0.9rem; line-height: 1.5; }
         #explanation-box { background: #fef2f2; color: #991b1b; border-left: 4px solid var(--error); }
         #hint-box { background: #fffbeb; color: #92400e; border-left: 4px solid var(--accent); }
@@ -61,7 +61,7 @@
             <span id="label-counter">0 / 100</span>
         </div>
         <div class="sentence-box" id="sentence-display">...</div>
-        <div id="options-grid" class="options-list"></div>
+        <div class="options-list" id="options-grid"></div>
         
         <div id="hint-box" class="feedback"></div>
         <div id="explanation-box" class="feedback"></div>
@@ -73,74 +73,69 @@
     </div>
 
     <div id="result-ui" class="hidden final-ui">
-        <h1>Terminé ! 🏆</h1>
-        <p>Votre score final :</p>
+        <h1>Excellent ! 🏆</h1>
+        <p>Ваш итоговый результат:</p>
         <div class="score-display" id="final-score">0%</div>
         <button class="btn-next" onclick="location.reload()" style="width: 100%;">Rejouer</button>
     </div>
 </div>
 
 <script>
-const quizData = [
-    { b: "Irrégulier", s: "Quand j'___ (être) jeune, j'étudiais le piano.", o: ["étais", "était", "étiez"], a: "étais", h: "L'unique exception de base : ét-", e: "Le verbe 'être' utilise la base 'ét-' à l'imparfait." },
-    { b: "2ème Groupe", s: "Nous ___ (finir) nos devoirs à 18h.", o: ["finissions", "finissions", "finions"], a: "finissions", h: "N'oubliez pas le double 's'.", e: "Les verbes en -ir (finir) prennent -iss- avant la terminaison." },
-    { b: "Orthographe", s: "Vous ___ (manger) souvent ici.", o: ["mangiez", "mangeiez", "mangeait"], a: "mangiez", h: "Attention à la règle du 'g'.", e: "Devant 'i', le 'e' du radical -ger disparaît." }
+// --- КОНТЕНТ И ГЕНЕРАЦИЯ ---
+const baseVerbs = [
+    {v: "être", base: "ét", e: "Исключение! Основа ét-."},
+    {v: "avoir", base: "av", e: "Основа av- (nous avons)."},
+    {v: "parler", base: "parl", e: "1 группа, основа parl-."},
+    {v: "finir", base: "finiss", e: "2 группа, обязателен суффикс -iss-."},
+    {v: "choisir", base: "choisiss", e: "2 группа, суффикс -iss-."},
+    {v: "faire", base: "fais", e: "3 группа, основа fais-."},
+    {v: "aller", base: "all", e: "Основа all-."},
+    {v: "prendre", base: "pren", e: "Основа pren- (nous prenons)."},
+    {v: "vouloir", base: "voul", e: "Основа voul- (nous voulons)."},
+    {v: "étudier", base: "étudi", e: "Глагол на -ier, в nous/vous будет две 'i'."}
 ];
 
-const verbs = [
-    {v: "parler", base: "parl", e: "Radical régulier parl-"},
-    {v: "choisir", base: "choisiss", e: "Verbe du 2ème groupe (-iss-)"},
-    {v: "vendre", base: "vend", e: "Radical régulier vend-"},
-    {v: "écrire", base: "écriv", e: "Basé sur 'nous écrivons'"},
-    {v: "prendre", base: "pren", e: "Basé sur 'nous prenons'"},
-    {v: "vouloir", base: "voul", e: "Basé sur 'nous voulons'"},
-    {v: "faire", base: "fais", e: "Basé sur 'nous faisons'"},
-    {v: "aller", base: "all", e: "Radical régulier all-"}
-];
-
-const subjects = [
+const subjs = [
     {p: "Je", t: "ais"}, {p: "Tu", t: "ais"}, {p: "Il", t: "ait"}, 
     {p: "Nous", t: "ions"}, {p: "Vous", t: "iez"}, {p: "Ils", t: "aient"}
 ];
 
-const contextes = ["souvent", "tous les jours", "chaque soir", "à l'époque", "autrefois"];
+const contexts = ["autrefois", "souvent", "toujours", "tous les matins", "quand j'étais jeune"];
 
-// Deduplication Set
-const usedQuestions = new Set();
+let quizData = [];
+let usedKeys = new Set();
 
+// Генерируем 100 уникальных вопросов
 while(quizData.length < 100) {
-    const verb = verbs[Math.floor(Math.random() * verbs.length)];
-    const sub = subjects[Math.floor(Math.random() * subjects.length)];
-    const ctx = contextes[Math.floor(Math.random() * contextes.length)];
-    const key = `${sub.p}-${verb.v}`;
+    const v = baseVerbs[Math.floor(Math.random() * baseVerbs.length)];
+    const s = subjs[Math.floor(Math.random() * subjs.length)];
+    const key = `${v.v}-${s.p}`;
 
-    if(!usedQuestions.has(key)) {
-        usedQuestions.add(key);
-        const correct = verb.base + sub.t;
+    if(!usedKeys.has(key)) {
+        usedKeys.add(key);
+        const correct = v.base + s.t;
         
-        // Generate smart distractors
-        let distractors = new Set();
-        while(distractors.size < 2) {
-            let randomTerm = subjects[Math.floor(Math.random() * subjects.length)].t;
-            let candidate = verb.base + randomTerm;
-            if(candidate !== correct) distractors.add(candidate);
-        }
+        // Создаем дистракторы из окончаний других лиц для того же глагола
+        let alt = subjs.filter(x => x.t !== s.t).map(x => v.base + x.t);
+        let shuffledAlt = alt.sort(() => 0.5 - Math.random()).slice(0, 2);
 
         quizData.push({
-            b: "Pratique",
-            s: `${sub.p} ___ (${verb.v}) ${ctx}.`,
-            o: [correct, ...distractors],
+            b: v.v === "être" ? "Irrégulier" : "Pratique",
+            s: `${s.p} ___ (${v.v}) ${contexts[Math.floor(Math.random() * contexts.length)]}.`,
+            o: [correct, ...shuffledAlt],
             a: correct,
-            h: `Cherchez la terminaison pour "${sub.p}".`,
-            e: `${verb.e}. La terminaison pour "${sub.p}" est -${sub.t}.`
+            h: `Посмотрите на подлежащее "${s.p}". Какое окончание ему соответствует?`,
+            e: `${v.e} Окончание для ${s.p} — это -${s.t}.`
         });
     }
+    
+    // Если базовых глаголов мало для 100 уникальных пар, добавим немного "синтетических" для примера
+    if(usedKeys.size === baseVerbs.length * subjs.length) break; 
 }
 
-let current = 0; 
-let score = 0;
+// --- ЛОГИКА ---
+let current = 0; let score = 0;
 
-// Fisher-Yates Shuffle
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -154,7 +149,7 @@ function render() {
     const options = shuffle([...q.o]);
 
     document.getElementById('progress-fill').style.width = `${current + 1}%`;
-    document.getElementById('label-counter').innerText = `${current + 1} / 100`;
+    document.getElementById('label-counter').innerText = `${current + 1} / ${quizData.length}`;
     document.getElementById('label-block').innerText = q.b;
     document.getElementById('sentence-display').innerText = q.s;
     document.getElementById('explanation-box').style.display = 'none';
@@ -169,20 +164,20 @@ function render() {
         const btn = document.createElement('button');
         btn.innerText = opt;
         btn.onclick = () => {
-            const allButtons = grid.querySelectorAll('button');
-            allButtons.forEach(b => {
-                b.disabled = true;
-                if(b.innerText === q.a) b.classList.add('missed'); // Show correct answer if missed
-            });
+            const btns = grid.querySelectorAll('button');
+            btns.forEach(b => b.disabled = true);
 
             if(opt === q.a) {
                 btn.classList.add('correct');
-                btn.classList.remove('missed');
                 score++;
             } else {
                 btn.classList.add('wrong');
+                // Показываем правильный ответ
+                btns.forEach(b => {
+                    if(b.innerText === q.a) b.classList.add('reveal-correct');
+                });
                 const eb = document.getElementById('explanation-box');
-                eb.innerHTML = `<strong>Faux !</strong> La réponse était <b>${q.a}</b>.<br>${q.e}`;
+                eb.innerHTML = `<b>Неверно!</b><br>Правильный ответ: <b>${q.a}</b>. ${q.e}`;
                 eb.style.display = 'block';
             }
             document.getElementById('next-btn').classList.remove('hidden');
@@ -200,11 +195,11 @@ document.getElementById('hint-btn').onclick = () => {
 
 document.getElementById('next-btn').onclick = () => {
     current++;
-    if(current < 100) render();
+    if(current < quizData.length) render();
     else {
         document.getElementById('quiz-ui').classList.add('hidden');
         document.getElementById('result-ui').classList.remove('hidden');
-        document.getElementById('final-score').innerText = `${score}%`;
+        document.getElementById('final-score').innerText = Math.round((score/quizData.length)*100) + "%";
     }
 };
 
